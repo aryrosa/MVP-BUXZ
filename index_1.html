@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buxz — Transporte de personal para empresas</title>
+<meta name="description" content="Buxz opera rutas fijas de transporte de personal en el Área Metropolitana de San Salvador. Consulte cobertura, cotice en línea y reserve asientos para su equipo.">
+<meta name="theme-color" content="#6D28D9">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237B3FD9'/><stop offset='0.55' stop-color='%23C93A8C'/><stop offset='1' stop-color='%23F97316'/></linearGradient></defs><rect width='32' height='32' rx='9' fill='url(%23g)'/><path d='M9 11h14v8.5a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2z' fill='%23fff'/><circle cx='12.5' cy='23.5' r='1.6' fill='%23fff'/><circle cx='19.5' cy='23.5' r='1.6' fill='%23fff'/></svg>">
+<style>
+/* ============================================================
+   BUXZ — sistema de diseño
+   Paleta derivada del logotipo. Todos los pares de color fueron
+   verificados contra WCAG AA (4.5:1 en texto, 3:1 en interfaz)
+   antes de adoptarse. No sustituir un hex sin volver a verificar.
+   ============================================================ */
+:root{
+  /* superficies */
+  --plane:#FAFAFC;
+  --surface:#FFFFFF;
+  --surface-2:#F4F2F8;
+  --surface-3:#EDEAF4;
+  /* tinta */
+  --ink:#1A0B2E;
+  --ink-2:#544A63;
+  --ink-3:#746C87;
+  /* líneas */
+  --line:#E7E3EE;
+  --line-2:#D6D0E0;
+  /* marca */
+  --violeta:#6D28D9;
+  --violeta-800:#5B21B6;
+  --violeta-soft:#F3EDFD;
+  --violeta-line:#DCCBF7;
+  --magenta:#BE2E7F;
+  --naranja:#EA6A10;
+  --grad:linear-gradient(135deg,#7B3FD9 0%,#C93A8C 55%,#F97316 100%);
+  /* estado */
+  --good:#0F7B37;
+  --good-soft:#E9F6EE;
+  --warn:#B45309;
+  --warn-soft:#FDF4E7;
+  --crit:#B4232B;
+  /* rampa ordinal validada para gráficos */
+  --r1:#BDA0EE; --r2:#9B6BE6; --r3:#7C3FDC; --r4:#5B21B6;
+
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px;
+  --sh-sm:0 1px 2px rgba(26,11,46,.06);
+  --sh:0 1px 3px rgba(26,11,46,.07), 0 8px 24px rgba(26,11,46,.06);
+  --sh-lg:0 2px 6px rgba(26,11,46,.08), 0 16px 42px rgba(26,11,46,.09);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --maxw:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--plane);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.58;-webkit-font-smoothing:antialiased;min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--violeta);outline-offset:2px;border-radius:4px}
+
+/* ---------- estructura ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+.section{padding:52px 0}
+.section-tight{padding:30px 0}
+
+/* ---------- encabezado ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+}
+.topbar-in{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--grad);
+  display:grid;place-items:center;flex:none;box-shadow:var(--sh-sm)}
+.brand-name{font-weight:750;font-size:19.5px;letter-spacing:-.028em;color:var(--ink)}
+.nav{display:flex;gap:2px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.nav a{
+  padding:8px 13px;border-radius:var(--r-sm);color:var(--ink-2);font-size:14px;
+  font-weight:520;transition:background .15s,color .15s;cursor:pointer;
+}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+.nav a.on{color:var(--violeta);background:var(--violeta-soft)}
+
+/* ---------- botones ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:var(--r-md);border:1px solid transparent;
+  background:var(--violeta);color:#fff;font-weight:600;font-size:14.5px;
+  cursor:pointer;transition:background .15s,box-shadow .15s,transform .06s;white-space:nowrap;
+}
+.btn:hover{background:var(--violeta-800);box-shadow:var(--sh-sm)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.42;cursor:not-allowed;box-shadow:none}
+.btn[disabled]:hover{background:var(--violeta)}
+.btn-lg{padding:14px 26px;font-size:15.5px}
+.btn-ghost{background:var(--surface);border-color:var(--line-2);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface-2);border-color:var(--ink-3);box-shadow:none}
+.btn-soft{background:var(--violeta-soft);color:var(--violeta);border-color:var(--violeta-line)}
+.btn-soft:hover{background:#EAE0FB;box-shadow:none}
+.btn-block{width:100%}
+
+/* ---------- tipografía ---------- */
+h1{font-size:clamp(29px,4.3vw,47px);line-height:1.09;letter-spacing:-.032em;font-weight:730}
+h2{font-size:clamp(21px,2.5vw,28px);line-height:1.22;letter-spacing:-.022em;font-weight:680}
+h3{font-size:17px;line-height:1.32;letter-spacing:-.012em;font-weight:660}
+h4{font-size:14.5px;font-weight:660;letter-spacing:-.004em}
+.lede{font-size:clamp(15.5px,1.5vw,17.5px);color:var(--ink-2);line-height:1.55;max-width:62ch}
+.muted{color:var(--ink-3)}
+.sec-2{color:var(--ink-2)}
+.small{font-size:13px}
+.xsmall{font-size:12px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--violeta);margin-bottom:11px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- tarjetas ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:22px;transition:border-color .16s,box-shadow .16s}
+.card-hover:hover{border-color:var(--line-2);box-shadow:var(--sh)}
+.card-pad-lg{padding:26px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* ---------- distintivos ---------- */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+  background:var(--surface-2);border:1px solid var(--line);font-size:12.5px;color:var(--ink-2)}
+.chip-btn{cursor:pointer;transition:all .15s;background:var(--surface)}
+.chip-btn:hover{border-color:var(--violeta-line);color:var(--violeta);background:var(--violeta-soft)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3.5px 9px;border-radius:6px;
+  font-size:11.5px;font-weight:640;letter-spacing:.01em}
+.badge-ok{background:var(--good-soft);color:var(--good);border:1px solid #C7E7D3}
+.badge-warn{background:var(--warn-soft);color:var(--warn);border:1px solid #F3DFC0}
+.badge-info{background:var(--violeta-soft);color:var(--violeta);border:1px solid var(--violeta-line)}
+.badge-mute{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line-2)}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;display:inline-block}
+
+/* ---------- formularios ---------- */
+.field{margin-bottom:16px}
+.label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+.hint{font-size:12px;color:var(--ink-3);margin-top:5px}
+.input,.select,.textarea{
+  width:100%;padding:11px 13px;background:var(--surface);
+  border:1px solid var(--line-2);border-radius:var(--r-md);
+  font-size:14.5px;transition:border-color .15s,box-shadow .15s;
+}
+.input:focus,.select:focus,.textarea:focus{
+  border-color:var(--violeta);box-shadow:0 0 0 3px rgba(109,40,217,.11);outline:none}
+.input::placeholder{color:#9C95A9}
+.textarea{min-height:84px;resize:vertical;font-family:inherit}
+.select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%23746C87' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.err{color:var(--crit);font-size:12.5px;margin-top:5px;display:flex;align-items:center;gap:5px}
+.input.bad,.select.bad{border-color:var(--crit)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>*{flex:1;min-width:180px}
+
+/* ---------- tablas ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;padding:11px 13px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--line);
+  background:var(--surface-2);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td strong{color:var(--ink);font-weight:600}
+.t-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--violeta)}
+
+/* ---------- utilidades ---------- */
+.stack{display:flex;flex-direction:column}
+.gap-4{gap:4px}.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}.gap-24{gap:24px}
+.flex{display:flex}.between{justify-content:space-between}.center{align-items:center}
+.wrapf{flex-wrap:wrap}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.mt-32{margin-top:32px}.mt-40{margin-top:40px}
+.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
+.hr{height:1px;background:var(--line);border:none;margin:20px 0}
+.tc{text-align:center}
+.max58{max-width:58ch}
+</style>
+<style>
+/* ---------- portada ---------- */
+.hero{padding:64px 0 40px;position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;top:-190px;right:-140px;width:520px;height:520px;
+  background:var(--grad);opacity:.07;border-radius:50%;filter:blur(50px);pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--sh-sm);
+  font-size:12.5px;font-weight:560;color:var(--ink-2);margin-bottom:20px;
+}
+.searchbar{
+  display:flex;gap:8px;padding:8px;background:var(--surface);
+  border:1px solid var(--line-2);border-radius:var(--r-xl);max-width:590px;
+  box-shadow:var(--sh);flex-wrap:wrap;
+}
+.searchbar .input{border:none;background:transparent;font-size:16px;flex:1;min-width:190px;padding:10px 13px}
+.searchbar .input:focus{box-shadow:none}
+.suggest{position:relative;max-width:590px}
+.suggest-list{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;background:var(--surface);
+  border:1px solid var(--line-2);border-radius:var(--r-md);box-shadow:var(--sh-lg);
+  overflow:hidden;max-height:290px;overflow-y:auto;
+}
+.suggest-item{
+  padding:11px 16px;cursor:pointer;font-size:14.5px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);
+}
+.suggest-item:last-child{border-bottom:none}
+.suggest-item:hover,.suggest-item.hi{background:var(--violeta-soft)}
+
+/* ---------- pasos ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step-n{
+  width:30px;height:30px;border-radius:9px;background:var(--violeta-soft);
+  border:1px solid var(--violeta-line);color:var(--violeta);
+  display:grid;place-items:center;font-weight:700;font-size:14px;margin-bottom:12px;
+}
+
+/* ---------- rutas ---------- */
+.route-card{display:flex;flex-direction:column;gap:13px}
+.route-path{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.route-node{font-weight:660;font-size:16px}
+.route-arrow{color:var(--violeta);flex:none;display:flex}
+.stops{display:flex;flex-direction:column;margin:2px 0}
+.stop{display:flex;align-items:flex-start;gap:10px;padding:4px 0;font-size:13.5px;color:var(--ink-2)}
+.stop-rail{display:flex;flex-direction:column;align-items:center;flex:none;width:10px}
+.stop-dot{width:7px;height:7px;border-radius:50%;background:var(--violeta);margin-top:6px;flex:none}
+.stop-line{width:2px;flex:1;background:var(--line-2);min-height:11px}
+.meta-row{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.meta-row b{color:var(--ink-2);font-weight:600}
+.meta-row span{display:inline-flex;align-items:center;gap:5px}
+
+/* barra de asientos */
+.seats{margin-top:2px}
+.seats-track{height:8px;background:var(--surface-3);border-radius:4px;overflow:hidden}
+.seats-fill{height:100%;background:var(--violeta);border-radius:4px;transition:width .3s ease}
+.seats-fill.forming{background:var(--naranja)}
+.seats-legend{display:flex;justify-content:space-between;gap:10px;margin-top:7px;font-size:12.5px;flex-wrap:wrap}
+
+/* ---------- cotizador ---------- */
+.quote-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+@media(max-width:900px){.quote-grid{grid-template-columns:1fr}}
+.quote-panel{position:sticky;top:84px}
+.qline{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;
+  font-size:14px;gap:14px;flex-wrap:wrap}
+.qline+.qline{border-top:1px solid var(--line)}
+.qline .k{color:var(--ink-2);flex:none}
+/* El valor debe poder partirse: razones sociales y destinos largos desbordaban
+   la tarjeta en pantallas angostas. */
+.qline .v{font-variant-numeric:tabular-nums;font-weight:600;text-align:right;
+  min-width:0;overflow-wrap:anywhere;margin-left:auto}
+.folio{overflow-wrap:anywhere}
+.route-node{overflow-wrap:anywhere}
+.qtotal{background:var(--violeta-soft);border:1px solid var(--violeta-line);
+  border-radius:var(--r-md);padding:17px;margin-top:14px}
+.qtotal .amount{font-size:33px;font-weight:730;letter-spacing:-.03em;line-height:1.1;color:var(--ink)}
+.stepper{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:var(--r-md);
+  overflow:hidden;background:var(--surface);width:fit-content}
+.stepper button{width:42px;height:44px;background:transparent;border:none;cursor:pointer;
+  color:var(--ink-2);font-size:19px;line-height:1;transition:background .14s}
+.stepper button:hover:not([disabled]){background:var(--surface-2);color:var(--violeta)}
+.stepper button[disabled]{opacity:.3;cursor:not-allowed}
+.stepper input{width:72px;height:44px;text-align:center;background:transparent;border:none;
+  border-left:1px solid var(--line-2);border-right:1px solid var(--line-2);
+  font-size:16px;font-weight:660;font-variant-numeric:tabular-nums}
+.stepper input:focus{outline:none;background:var(--surface-2)}
+.seg{display:flex;border:1px solid var(--line-2);border-radius:var(--r-md);overflow:hidden;
+  background:var(--surface);width:fit-content;flex-wrap:wrap}
+.seg button{padding:10px 17px;background:transparent;border:none;cursor:pointer;font-size:14px;
+  color:var(--ink-2);transition:background .14s,color .14s;font-weight:520}
+.seg button+button{border-left:1px solid var(--line-2)}
+.seg button.on{background:var(--violeta);color:#fff;font-weight:600}
+.seg button:not(.on):hover{background:var(--surface-2);color:var(--ink)}
+
+/* ---------- avisos ---------- */
+.note{display:flex;gap:10px;padding:13px 15px;border-radius:var(--r-md);
+  background:var(--surface-2);border:1px solid var(--line-2);font-size:13.5px;
+  color:var(--ink-2);line-height:1.52}
+.note-accent{background:var(--violeta-soft);border-color:var(--violeta-line)}
+.note-warn{background:var(--warn-soft);border-color:#F3DFC0}
+.note-ok{background:var(--good-soft);border-color:#C7E7D3}
+.note svg{flex:none;margin-top:2px}
+.note b{color:var(--ink)}
+
+/* ---------- confirmación ---------- */
+.folio{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:27px;font-weight:700;
+  letter-spacing:.05em;color:var(--violeta)}
+.check-circle{width:56px;height:56px;border-radius:50%;background:var(--good-soft);
+  border:1px solid #C7E7D3;display:grid;place-items:center;margin:0 auto 18px}
+.timeline{display:flex;flex-direction:column}
+.tl-item{display:flex;gap:14px;padding-bottom:19px}
+.tl-item:last-child{padding-bottom:0}
+.tl-rail{display:flex;flex-direction:column;align-items:center;flex:none;width:26px}
+.tl-num{width:26px;height:26px;border-radius:50%;background:var(--surface-2);
+  border:1px solid var(--line-2);display:grid;place-items:center;font-size:12px;
+  font-weight:700;color:var(--ink-3);flex:none}
+.tl-item.done .tl-num{background:var(--good-soft);border-color:#C7E7D3;color:var(--good)}
+.tl-line{width:2px;flex:1;background:var(--line-2);margin:4px 0}
+
+/* ---------- documentación interna ---------- */
+.journey{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media(max-width:1000px){.journey{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:660px){.journey{grid-template-columns:1fr}}
+.jstage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:15px;display:flex;flex-direction:column;gap:9px}
+.jrow{font-size:12.5px;line-height:1.45}
+.jrow .jk{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:2px}
+.jfn{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--violeta)}
+.flow{display:flex;align-items:stretch;gap:8px;overflow-x:auto;padding-bottom:6px}
+.fstep{flex:1;min-width:130px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:14px;text-align:center}
+.fstep.key{border-color:var(--violeta);background:var(--violeta-soft)}
+.fstep .fn{width:24px;height:24px;border-radius:50%;background:var(--surface-2);color:var(--ink-3);
+  display:grid;place-items:center;font-size:11.5px;font-weight:700;margin:0 auto 9px}
+.fstep.key .fn{background:var(--violeta);color:#fff}
+.farrow{display:grid;place-items:center;color:var(--line-2);flex:none}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:17px}
+.tile .tl{font-size:12.5px;color:var(--ink-3);margin-bottom:7px}
+.tile .tv{font-size:30px;font-weight:730;letter-spacing:-.028em;line-height:1.05;color:var(--ink)}
+.tile .td{font-size:12px;color:var(--ink-3);margin-top:5px}
+.funnel{display:flex;flex-direction:column;gap:11px}
+.fnl-row{display:grid;grid-template-columns:156px 1fr 60px;gap:13px;align-items:center}
+@media(max-width:620px){.fnl-row{grid-template-columns:104px 1fr 48px;gap:9px}}
+.fnl-label{font-size:13px;color:var(--ink-2)}
+.fnl-track{height:24px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.fnl-bar{height:100%;border-radius:0 4px 4px 0;transition:width .4s ease;min-width:2px}
+.fnl-val{text-align:right;font-variant-numeric:tabular-nums;font-weight:640;font-size:14px}
+.doc-nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px}
+.doc-nav button{padding:8px 15px;border-radius:999px;background:var(--surface);
+  border:1px solid var(--line-2);color:var(--ink-2);font-size:13.5px;cursor:pointer;
+  transition:all .15s;font-weight:520}
+.doc-nav button:hover{border-color:var(--ink-3);color:var(--ink)}
+.doc-nav button.on{background:var(--violeta);border-color:var(--violeta);color:#fff;font-weight:600}
+.kv{display:grid;grid-template-columns:168px 1fr;gap:11px 18px;font-size:14px}
+@media(max-width:620px){.kv{grid-template-columns:1fr;gap:3px 0}.kv dt{margin-top:11px}}
+.kv dt{color:var(--ink-3);font-size:12.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.05em;padding-top:2px}
+.kv dd{color:var(--ink-2)}
+.quote-block{border-left:3px solid var(--violeta);padding:3px 0 3px 16px;color:var(--ink-2);
+  font-size:15px;line-height:1.55}
+.interna{background:var(--warn-soft);border-bottom:1px solid #F3DFC0;padding:9px 0;
+  font-size:12.5px;color:var(--warn);text-align:center}
+
+/* ---------- pie ---------- */
+.footer{border-top:1px solid var(--line);margin-top:56px;padding:32px 0 44px;
+  color:var(--ink-3);font-size:13px;background:var(--surface)}
+.footer a{color:var(--ink-2);cursor:pointer}
+.footer a:hover{color:var(--violeta);text-decoration:underline}
+
+/* ---------- aviso flotante ---------- */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140%);
+  background:var(--ink);color:#fff;border-radius:var(--r-md);padding:12px 20px;font-size:14px;
+  box-shadow:var(--sh-lg);z-index:100;transition:transform .3s cubic-bezier(.2,.8,.2,1);max-width:90vw}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+@media print{
+  .topbar,.footer,.doc-nav,.interna{display:none}
+  .hero::before{display:none}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ============================================================================
+   BUXZ · MVP DIGITAL
+   Proyecto de la clase de Emprendimiento — ESEN
+   ----------------------------------------------------------------------------
+   ARQUITECTURA
+   Archivo único, sin dependencias externas ni paso de compilación. Funciona
+   abierto directamente (file://) y como sitio estático en Vercel. El guardado
+   usa localStorage y cae a memoria si el navegador lo bloquea.
+   Para persistencia real, completar SUPABASE — ver README.
+
+   MODELO DE COBRO: POR ASIENTO RESERVADO
+   La empresa reserva asientos en una ruta y paga por ellos durante el período,
+   los utilice o no. El costo del viaje es el mismo vaya la unidad llena o a
+   media carga, así que el ingreso se ata al asiento y no a la asistencia.
+   Consecuencias de diseño:
+     · La facturación no depende del control de asistencia.
+     · El margen va incorporado en el precio del asiento.
+     · Una ruta se abre cuando se vende un mínimo de asientos que cubre su costo.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. CONFIGURACIÓN DE SUPABASE  (opcional — el MVP funciona sin esto)
+--------------------------------------------------------------------------- */
+const SUPABASE = {
+  activo: false,
+  url:    "",   // ej. https://abcdefghijk.supabase.co
+  anonKey:""    // clave "anon public"
+};
+
+/* ---------------------------------------------------------------------------
+   2. PARÁMETROS DEL MODELO
+   ⚠ VALORES DE EJEMPLO. No provienen de cotizaciones reales de transportistas.
+   Editables desde Parámetros del modelo (sección interna).
+--------------------------------------------------------------------------- */
+const PARAMS = { diasHabiles: 22 };
+
+/* ---------------------------------------------------------------------------
+   3. CATÁLOGO DE RUTAS
+   Municipios y zonas francas son lugares reales de El Salvador.
+   Horarios, capacidades, costos y ocupación son de ejemplo.
+
+   costoFijoViaje  = costo de operar el viaje (combustible, conductor, unidad,
+                     mantenimiento y seguro). Interno: no se muestra al cliente.
+   precioAsiento   = tarifa por asiento reservado, por viaje.
+   asientosVendidos= asientos ya comprometidos por otras empresas.
+--------------------------------------------------------------------------- */
+const RUTAS = [
+  {
+    id:"R-01", origen:"Soyapango", destino:"Zona Franca San Bartolo, Ilopango",
+    km:9, capacidad:28, costoFijoViaje:33.94, precioAsiento:1.85, asientosVendidos:19,
+    puntos:["Redondel Plaza Mundo","Parque Central de Soyapango","Bulevar del Ejército, km 5"],
+    horarios:[
+      {id:"a", turno:"Turno A", entrada:"6:00 a.m.", recoge:"4:45 a.m."},
+      {id:"b", turno:"Turno B", entrada:"2:00 p.m.", recoge:"12:45 p.m."}
+    ]
+  },
+  {
+    id:"R-02", origen:"Apopa", destino:"Zona Industrial Plan de La Laguna, Antiguo Cuscatlán",
+    km:22, capacidad:28, costoFijoViaje:52.00, precioAsiento:2.40, asientosVendidos:23,
+    puntos:["Terminal de Apopa","Redondel Integración","Desvío a Nejapa"],
+    horarios:[
+      {id:"a", turno:"Turno A", entrada:"7:00 a.m.", recoge:"5:20 a.m."},
+      {id:"b", turno:"Turno B", entrada:"3:00 p.m.", recoge:"1:20 p.m."}
+    ]
+  },
+  {
+    id:"R-03", origen:"Ciudad Delgado", destino:"Zona Franca Export Salva, San Marcos",
+    km:16, capacidad:28, costoFijoViaje:44.00, precioAsiento:2.10, asientosVendidos:11,
+    puntos:["Plaza Ciudad Delgado","Calle a Tonacatepeque, km 3","Redondel Naciones Unidas"],
+    horarios:[
+      {id:"a", turno:"Turno A", entrada:"6:30 a.m.", recoge:"5:00 a.m."},
+      {id:"c", turno:"Turno C", entrada:"10:00 p.m.", recoge:"8:30 p.m."}
+    ]
+  },
+  {
+    id:"R-04", origen:"Santa Tecla", destino:"Zona Franca American Park, Ateos",
+    km:24, capacidad:32, costoFijoViaje:56.00, precioAsiento:2.55, asientosVendidos:32,
+    puntos:["Plaza Merliot","Redondel Santa Tecla","Desvío a Sacacoyo"],
+    horarios:[
+      {id:"a", turno:"Turno A", entrada:"7:00 a.m.", recoge:"5:15 a.m."},
+      {id:"b", turno:"Turno B", entrada:"3:00 p.m.", recoge:"1:15 p.m."}
+    ]
+  },
+  {
+    id:"R-05", origen:"Ilopango", destino:"Zona Industrial Plan de La Laguna, Antiguo Cuscatlán",
+    km:20, capacidad:28, costoFijoViaje:49.00, precioAsiento:2.30, asientosVendidos:8,
+    puntos:["Redondel Ilopango","Bulevar del Ejército, km 10","Colonia San Bartolo"],
+    horarios:[
+      {id:"a", turno:"Turno A", entrada:"7:00 a.m.", recoge:"5:25 a.m."},
+      {id:"b", turno:"Turno B", entrada:"3:00 p.m.", recoge:"1:25 p.m."}
+    ]
+  }
+];
+
+/* Municipios del buscador. cubierta:false alimenta el registro de demanda (F5). */
+const ZONAS = [
+  {n:"Soyapango",       d:"San Salvador",  cubierta:true},
+  {n:"Apopa",           d:"San Salvador",  cubierta:true},
+  {n:"Ciudad Delgado",  d:"San Salvador",  cubierta:true},
+  {n:"Santa Tecla",     d:"La Libertad",   cubierta:true},
+  {n:"Ilopango",        d:"San Salvador",  cubierta:true},
+  {n:"Mejicanos",       d:"San Salvador",  cubierta:false},
+  {n:"Cuscatancingo",   d:"San Salvador",  cubierta:false},
+  {n:"Tonacatepeque",   d:"San Salvador",  cubierta:false},
+  {n:"San Martín",      d:"San Salvador",  cubierta:false},
+  {n:"Nejapa",          d:"San Salvador",  cubierta:false},
+  {n:"Santo Tomás",     d:"San Salvador",  cubierta:false},
+  {n:"Colón",           d:"La Libertad",   cubierta:false},
+  {n:"Quezaltepeque",   d:"La Libertad",   cubierta:false},
+  {n:"Zaragoza",        d:"La Libertad",   cubierta:false},
+  {n:"Cojutepeque",     d:"Cuscatlán",     cubierta:false},
+  {n:"San Vicente",     d:"San Vicente",   cubierta:false},
+  {n:"Zacatecoluca",    d:"La Paz",        cubierta:false},
+  {n:"Santa Ana",       d:"Santa Ana",     cubierta:false},
+  {n:"Sonsonate",       d:"Sonsonate",     cubierta:false},
+  {n:"San Miguel",      d:"San Miguel",    cubierta:false}
+];
+
+/* ---------------------------------------------------------------------------
+   4. LÓGICA DE NEGOCIO
+--------------------------------------------------------------------------- */
+
+/* Asientos que deben venderse para que la ruta cubra su costo de operación.
+   Umbral interno: define si la ruta ya opera o sigue en formación. */
+function asientosMinimos(r){
+  return Math.ceil(r.costoFijoViaje / r.precioAsiento);
+}
+function asientosDisponibles(r){
+  return Math.max(0, r.capacidad - r.asientosVendidos);
+}
+function enFormacion(r){
+  return r.asientosVendidos < asientosMinimos(r);
+}
+function faltanParaOperar(r){
+  return Math.max(0, asientosMinimos(r) - r.asientosVendidos);
+}
+
+/* Cotización: asientos × tarifa × viajes por día × días del período.
+   No interviene la asistencia: el asiento se cobra por estar reservado. */
+function cotizar(ruta, asientos, viajesPorDia){
+  const porViaje = asientos * ruta.precioAsiento;
+  const porDia   = porViaje * viajesPorDia;
+  const mensual  = porDia * PARAMS.diasHabiles;
+  return {
+    asientos, porViaje, porDia, mensual, viajesPorDia,
+    dias: PARAMS.diasHabiles,
+    porAsientoMes: ruta.precioAsiento * viajesPorDia * PARAMS.diasHabiles,
+    disponibles: asientosDisponibles(ruta)
+  };
+}
+
+function money(n){
+  return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function money0(n){
+  return "$" + Math.round(n).toLocaleString("en-US");
+}
+function nuevoFolio(){
+  const s = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let t = "";
+  for(let i=0;i<4;i++) t += s[Math.floor(Math.random()*s.length)];
+  return "BXZ-" + t;
+}
+function rutasDeZona(zona){
+  const z = zona.trim().toLowerCase();
+  return RUTAS.filter(r => r.origen.toLowerCase() === z);
+}
+function esc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* ---------------------------------------------------------------------------
+   5. ALMACENAMIENTO Y MEDICIÓN
+--------------------------------------------------------------------------- */
+const Store = {
+  KEY: "buxz_mvp_v2",
+  mem: null,
+  disponible: true,
+
+  _vacio(){ return { reservas:[], demanda:[], eventos:[], visitantes:0 }; },
+  leer(){
+    if(this.mem) return this.mem;
+    try{
+      const raw = localStorage.getItem(this.KEY);
+      this.mem = raw ? JSON.parse(raw) : this._vacio();
+    }catch(e){ this.disponible = false; this.mem = this._vacio(); }
+    return this.mem;
+  },
+  guardar(){
+    try{ localStorage.setItem(this.KEY, JSON.stringify(this.mem)); }
+    catch(e){ this.disponible = false; }
+  },
+  evento(tipo, datos){
+    const d = this.leer();
+    d.eventos.push({ tipo, datos: datos||{}, ts: new Date().toISOString() });
+    if(d.eventos.length > 800) d.eventos = d.eventos.slice(-800);
+    this.guardar();
+    if(SUPABASE.activo) Supa.insertar("eventos", { tipo, datos: datos||{} });
+  },
+  contarVisita(){
+    let nueva = true;
+    try{
+      if(sessionStorage.getItem("buxz_sesion")) nueva = false;
+      else sessionStorage.setItem("buxz_sesion","1");
+    }catch(e){ nueva = !this._visitaContada; this._visitaContada = true; }
+    if(nueva){
+      const d = this.leer();
+      d.visitantes = (d.visitantes||0) + 1;
+      this.guardar();
+      this.evento("visita");
+    }
+  },
+  reservar(res){
+    const d = this.leer();
+    d.reservas.push(res);
+    this.guardar();
+    this.evento("reserva_enviada", { folio:res.folio, ruta:res.rutaId, asientos:res.asientos });
+    if(SUPABASE.activo) Supa.insertar("reservas", res);
+    return res;
+  },
+  registrarDemanda(reg){
+    const d = this.leer();
+    d.demanda.push(reg);
+    this.guardar();
+    this.evento("demanda_zona", { zona:reg.zona, asientos:reg.asientos });
+    if(SUPABASE.activo) Supa.insertar("demanda", reg);
+  },
+  buscarFolio(folio){
+    return this.leer().reservas.find(s => s.folio.toUpperCase() === folio.trim().toUpperCase());
+  },
+  contarTipo(tipo){ return this.leer().eventos.filter(e => e.tipo === tipo).length; },
+  /* Embudo con monotonía forzada: quien reserva pasó por la cotización. */
+  embudo(){
+    const d = this.leer();
+    const reservas     = d.reservas.length;
+    const cotizaciones = Math.max(this.contarTipo("cotizacion"), reservas);
+    const busquedas    = Math.max(this.contarTipo("busqueda_zona"), cotizaciones);
+    const visitas      = Math.max(d.visitantes||0, this.contarTipo("visita"), busquedas);
+    return { visitas, busquedas, cotizaciones, reservas };
+  },
+  reiniciar(){
+    this.mem = this._vacio(); this.guardar();
+    try{ sessionStorage.removeItem("buxz_sesion"); }catch(e){}
+  }
+};
+
+/* Adaptador REST de Supabase. No requiere librería. */
+const Supa = {
+  async insertar(tabla, fila){
+    if(!SUPABASE.activo || !SUPABASE.url || !SUPABASE.anonKey) return;
+    try{
+      await fetch(`${SUPABASE.url}/rest/v1/${tabla}`, {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "apikey": SUPABASE.anonKey,
+          "Authorization":`Bearer ${SUPABASE.anonKey}`,
+          "Prefer":"return=minimal"
+        },
+        body: JSON.stringify(fila)
+      });
+    }catch(e){ /* el dato ya quedó guardado localmente */ }
+  }
+};
+</script>
+<script>
+/* ============================================================================
+   6. ESTADO Y NAVEGACIÓN
+============================================================================ */
+const S = {
+  vista:"landing", zona:"", busqueda:"", sugerencias:[], hi:-1,
+  ruta:null, horarioId:null, asientos:5, viajesPorDia:2,
+  form:{}, errores:{}, folio:null, consulta:"", consultaErr:"",
+  docTab:"paso0", zonaSinCobertura:""
+};
+
+const ICON = {
+  bus:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 6h14v10.5a1.8 1.8 0 0 1-1.8 1.8H6.8A1.8 1.8 0 0 1 5 16.5z" fill="#fff"/><rect x="6.8" y="7.8" width="10.4" height="5" rx="1" fill="#7B3FD9" opacity=".55"/><circle cx="8.6" cy="20" r="1.5" fill="#fff"/><circle cx="15.4" cy="20" r="1.5" fill="#fff"/></svg>',
+  arrow:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  search:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  check:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0F7B37" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  info:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  alert:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>',
+  clock:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  seat:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h3a2 2 0 0 1 2 2v7H8a2 2 0 0 1-2-2z"/><path d="M11 13h5a2 2 0 0 1 2 2v5"/><path d="M6 20h12"/></svg>',
+  pin:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>'
+};
+
+const VISTAS_VALIDAS = ["landing","rutas","cotizar","reservar","confirmacion",
+                        "estado","sincobertura","proyecto","medicion"];
+/* Vistas internas: existen para la evaluación del curso, no forman parte del
+   producto. No aparecen en la navegación; se llega por URL directa. */
+const VISTAS_INTERNAS = ["proyecto","medicion"];
+
+let _navInterno = false;
+function ir(vista){
+  S.vista = vista;
+  const h = "#/" + (vista === "landing" ? "" : vista);
+  _navInterno = true;
+  try{ if(location.hash !== h) location.hash = h; }catch(e){}
+  setTimeout(()=>{ _navInterno = false; }, 0);
+  try{ window.scrollTo(0,0); }catch(e){}
+  render();
+}
+function leerHash(){
+  try{
+    const v = (location.hash || "").replace(/^#\/?/,"");
+    return VISTAS_VALIDAS.includes(v) ? v : "landing";
+  }catch(e){ return "landing"; }
+}
+window.addEventListener("hashchange", () => {
+  if(_navInterno) return;
+  S.vista = leerHash();
+  render();
+});
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove("show"), 3000);
+}
+
+/* ============================================================================
+   7. CASCARÓN
+============================================================================ */
+function shell(contenido){
+  const n = (v,txt) => `<a class="${S.vista===v?'on':''}" onclick="ir('${v}')">${txt}</a>`;
+  const interna = VISTAS_INTERNAS.includes(S.vista);
+  return `
+  ${interna ? `<div class="interna">Sección interna del equipo Buxz · no forma parte del producto que ve el cliente</div>` : ""}
+  <header class="topbar"><div class="wrap topbar-in">
+    <div class="brand" onclick="ir('landing')">
+      <div class="brand-mark">${ICON.bus}</div>
+      <span class="brand-name">Buxz</span>
+    </div>
+    <nav class="nav">
+      ${n("landing","Inicio")}
+      ${n("rutas","Rutas y cobertura")}
+      ${n("estado","Consultar reserva")}
+      <a class="btn btn-soft" style="margin-left:6px" onclick="ir('rutas')">Cotizar</a>
+    </nav>
+  </div></header>
+  <main>${contenido}</main>
+  <footer class="footer"><div class="wrap">
+    <div class="flex between wrapf gap-24">
+      <div style="max-width:34ch">
+        <div class="flex center gap-8 mb-8">
+          <div class="brand-mark" style="width:26px;height:26px;border-radius:8px">${ICON.bus}</div>
+          <strong style="color:var(--ink)">Buxz</strong>
+        </div>
+        <div class="xsmall">Transporte de personal por rutas fijas.<br>Área Metropolitana de San Salvador.</div>
+      </div>
+      <div class="stack gap-4 small">
+        <strong style="color:var(--ink);font-size:12.5px" class="mb-8">Servicio</strong>
+        <a onclick="ir('rutas')">Rutas y cobertura</a>
+        <a onclick="ir('estado')">Consultar una reserva</a>
+        <a onclick="ir('sincobertura')">Solicitar una zona nueva</a>
+      </div>
+      <div class="stack gap-4 small">
+        <strong style="color:var(--ink);font-size:12.5px" class="mb-8">Cómo funciona el cobro</strong>
+        <span class="xsmall" style="max-width:30ch;line-height:1.5">
+          Se factura por asiento reservado durante el período, con independencia
+          de la asistencia diaria del personal.
+        </span>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div class="xsmall">Proyecto académico · Clase de Emprendimiento, ESEN · Datos de demostración</div>
+  </div></footer>`;
+}
+
+/* ============================================================================
+   8. VISTA · INICIO   (flujo crítico, pasos 1 y 2)
+============================================================================ */
+function vLanding(){
+  const cubiertas = ZONAS.filter(z=>z.cubierta);
+  const enOperacion = RUTAS.filter(r=>!enFormacion(r)).length;
+  return `
+  <section class="hero"><div class="wrap">
+    <div class="hero-badge">${ICON.pin} ${RUTAS.length} rutas en el Área Metropolitana de San Salvador</div>
+    <h1>El transporte de su personal,<br>cotizado en línea.</h1>
+    <p class="lede mt-16">
+      Buxz opera rutas fijas que recogen a su equipo cerca de donde vive y lo trasladan
+      a su planta u oficina a la hora de entrada. Consulte la cobertura de su zona y
+      obtenga el costo mensual en el momento, sin llamadas ni esperas.
+    </p>
+
+    <div class="mt-32 suggest">
+      <div class="searchbar">
+        <input class="input" id="q" autocomplete="off"
+               placeholder="Municipio donde reside su personal"
+               value="${esc(S.busqueda)}" oninput="onBuscar(this.value)" onkeydown="onTeclaBuscar(event)">
+        <button class="btn" onclick="buscarZona()">${ICON.search} Consultar</button>
+      </div>
+      ${listaSugerencias()}
+    </div>
+
+    <div class="flex wrapf gap-8 mt-24 center">
+      <span class="xsmall muted">Zonas con cobertura:</span>
+      ${cubiertas.map(z=>`<span class="chip chip-btn" onclick="elegirZona('${esc(z.n)}')">${esc(z.n)}</span>`).join("")}
+    </div>
+  </div></section>
+
+  <section class="section-tight"><div class="wrap">
+    <div class="steps">
+      <div class="card">
+        <div class="step-n">1</div>
+        <h3>Consulte la cobertura</h3>
+        <p class="small sec-2 mt-8">Indique el municipio donde reside la mayor parte de su personal y verifique si existe una ruta que pase por esa zona.</p>
+      </div>
+      <div class="card">
+        <div class="step-n">2</div>
+        <h3>Cotice los asientos</h3>
+        <p class="small sec-2 mt-8">Seleccione cuántos asientos requiere y en qué turno. El costo mensual se calcula de inmediato, con el desglose completo.</p>
+      </div>
+      <div class="card">
+        <div class="step-n">3</div>
+        <h3>Reserve el cupo</h3>
+        <p class="small sec-2 mt-8">Registre los datos de su empresa y reciba un número de reserva. Confirmamos disponibilidad en un plazo de 24 horas hábiles.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section-tight"><div class="wrap">
+    <div class="card card-pad-lg">
+      <div class="grid g2" style="gap:28px">
+        <div>
+          <div class="eyebrow">Modelo de servicio</div>
+          <h2 style="font-size:22px">Un asiento reservado es un asiento garantizado</h2>
+          <p class="sec-2 mt-12 small" style="line-height:1.6">
+            Buxz factura por asiento reservado durante el período, no por asistencia diaria.
+            La unidad recorre la ruta completa y espera en cada punto con independencia de
+            cuántas personas aborden, de modo que el asiento permanece disponible para su
+            empresa todos los días del mes.
+          </p>
+          <p class="sec-2 mt-12 small" style="line-height:1.6">
+            Esto mantiene la factura fija y previsible: un mismo monto cada período,
+            fácil de presupuestar y de aprobar.
+          </p>
+        </div>
+        <div>
+          <div class="eyebrow">Rutas compartidas</div>
+          <h2 style="font-size:22px">No necesita llenar una unidad completa</h2>
+          <p class="sec-2 mt-12 small" style="line-height:1.6">
+            Cada ruta se comparte entre varias empresas de la misma zona con destinos
+            cercanos y horarios compatibles. Una empresa con cuatro o cinco personas
+            en un municipio puede acceder al servicio sin contratar una unidad entera.
+          </p>
+          <p class="sec-2 mt-12 small" style="line-height:1.6">
+            Cuando una ruta aún no reúne los asientos necesarios para operar, aparece
+            marcada como <b>en formación</b> y su reserva se suma para activarla.
+          </p>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="flex between center wrapf gap-12">
+        <span class="small muted">${enOperacion} de ${RUTAS.length} rutas se encuentran actualmente en operación.</span>
+        <button class="btn" onclick="ir('rutas')">Ver rutas y cobertura ${ICON.arrow}</button>
+      </div>
+    </div>
+  </div></section>`;
+}
+
+function listaSugerencias(){
+  if(!S.sugerencias.length) return "";
+  return `<div class="suggest-list">${S.sugerencias.map((z,i)=>`
+    <div class="suggest-item ${i===S.hi?'hi':''}" onclick="elegirZona('${esc(z.n)}')">
+      <span>${esc(z.n)} <span class="muted small">· ${esc(z.d)}</span></span>
+      ${z.cubierta
+        ? '<span class="badge badge-ok">Con cobertura</span>'
+        : '<span class="badge badge-mute">Sin cobertura</span>'}
+    </div>`).join("")}</div>`;
+}
+
+/* ============================================================================
+   9. VISTA · RUTAS  (paso 3: elige)
+============================================================================ */
+function vRutas(){
+  const rutas = S.zona ? rutasDeZona(S.zona) : RUTAS;
+  const zonaObj = ZONAS.find(z => z.n.toLowerCase() === S.zona.trim().toLowerCase());
+  const sinCobertura = S.zona && rutas.length === 0;
+
+  return `
+  <section class="section"><div class="wrap">
+    <div class="eyebrow">Rutas y cobertura</div>
+    <h2>${S.zona ? `Rutas desde ${esc(S.zona)}` : "Rutas disponibles"}</h2>
+    <p class="lede mt-8 small">
+      Cada ruta indica cuántos asientos permanecen disponibles. La tarifa corresponde
+      a un asiento reservado por viaje.
+    </p>
+
+    <div class="mt-24 suggest" style="max-width:590px">
+      <div class="searchbar">
+        <input class="input" id="q" autocomplete="off" placeholder="Consultar otro municipio"
+               value="${esc(S.busqueda)}" oninput="onBuscar(this.value)" onkeydown="onTeclaBuscar(event)">
+        <button class="btn" onclick="buscarZona()">${ICON.search} Consultar</button>
+      </div>
+      ${listaSugerencias()}
+    </div>
+
+    ${sinCobertura ? `
+      <div class="card card-pad-lg mt-32" style="border-color:var(--violeta-line);background:var(--violeta-soft)">
+        <h3>Aún no operamos en ${esc(S.zona)}${zonaObj?`, ${esc(zonaObj.d)}`:""}</h3>
+        <p class="sec-2 mt-8 max58 small">
+          Las rutas nuevas se abren cuando se reúne demanda suficiente en una zona.
+          Registre cuántos asientos necesitaría y le informaremos en cuanto la ruta
+          sea viable.
+        </p>
+        <button class="btn mt-16" onclick="S.zonaSinCobertura='${esc(S.zona)}';S.form={};S.errores={};ir('sincobertura')">
+          Registrar mi zona ${ICON.arrow}
+        </button>
+      </div>
+      <div class="hr" style="margin:32px 0"></div>
+      <h4 class="muted mb-16">Rutas actualmente disponibles</h4>
+      <div class="grid g2">${RUTAS.map(cardRuta).join("")}</div>
+    ` : `
+      <div class="grid g2 mt-32">${rutas.map(cardRuta).join("")}</div>
+      ${S.zona ? `
+        <div class="note mt-24">${ICON.info}
+          <span>¿Su personal reside en otro municipio? Registre esa zona y le avisaremos
+          cuando abramos la ruta.
+          <a onclick="S.zonaSinCobertura='';S.form={};S.errores={};ir('sincobertura')"
+             style="color:var(--violeta);cursor:pointer;text-decoration:underline;font-weight:600">Registrar una zona</a>.</span>
+        </div>` : ""}
+    `}
+  </div></section>`;
+}
+
+function cardRuta(r){
+  const disp = asientosDisponibles(r);
+  const form = enFormacion(r);
+  const faltan = faltanParaOperar(r);
+  const pct = Math.round((r.asientosVendidos / r.capacidad) * 100);
+  const mensualAsiento = r.precioAsiento * 2 * PARAMS.diasHabiles;
+  return `
+  <div class="card card-hover route-card">
+    <div class="flex between center wrapf gap-8">
+      <span class="chip t-code">${r.id}</span>
+      ${form
+        ? `<span class="badge badge-warn">En formación</span>`
+        : (disp === 0
+            ? `<span class="badge badge-mute">Sin asientos disponibles</span>`
+            : `<span class="badge badge-ok">En operación</span>`)}
+    </div>
+
+    <div class="route-path">
+      <span class="route-node">${esc(r.origen)}</span>
+      <span class="route-arrow">${ICON.arrow}</span>
+      <span class="route-node" style="font-size:14.5px;color:var(--ink-2)">${esc(r.destino)}</span>
+    </div>
+
+    <div class="stops">
+      ${r.puntos.map((p,i)=>`
+        <div class="stop">
+          <div class="stop-rail"><div class="stop-dot"></div>${i<r.puntos.length-1?'<div class="stop-line"></div>':''}</div>
+          <div>${esc(p)}</div>
+        </div>`).join("")}
+    </div>
+
+    <div class="meta-row">
+      <span>${ICON.clock} ${r.horarios.map(h=>esc(h.entrada)).join(" · ")}</span>
+      <span>${ICON.seat} <b>${r.capacidad}</b> asientos</span>
+    </div>
+
+    <div class="seats">
+      <div class="seats-track">
+        <div class="seats-fill ${form?'forming':''}" style="width:${pct}%"></div>
+      </div>
+      <div class="seats-legend">
+        ${form
+          ? `<span style="color:var(--warn);font-weight:600">Faltan ${faltan} asientos para iniciar</span>
+             <span class="muted">${r.asientosVendidos} de ${r.capacidad} reservados</span>`
+          : `<span style="color:${disp<=5?'var(--warn)':'var(--ink-2)'};font-weight:600">
+               ${disp === 0 ? "Sin disponibilidad" : disp + " asiento" + (disp===1?"":"s") + " disponible" + (disp===1?"":"s")}
+             </span>
+             <span class="muted">${r.asientosVendidos} de ${r.capacidad} reservados</span>`}
+      </div>
+    </div>
+
+    <div class="flex between center wrapf gap-12" style="margin-top:auto;padding-top:8px">
+      <div>
+        <div><b style="font-size:17px">${money(r.precioAsiento)}</b>
+          <span class="xsmall muted">por asiento / viaje</span></div>
+        <div class="xsmall muted">${money0(mensualAsiento)} al mes por asiento, ida y vuelta</div>
+      </div>
+      ${disp === 0
+        ? `<button class="btn btn-ghost" onclick="S.zonaSinCobertura='${esc(r.origen)}';S.form={};S.errores={};ir('sincobertura')">Anotarme en lista</button>`
+        : `<button class="btn" onclick="abrirCotizador('${r.id}')">Cotizar ${ICON.arrow}</button>`}
+    </div>
+  </div>`;
+}
+</script>
+<script>
+/* ============================================================================
+   10. VISTA · COTIZADOR  (paso 4: acción clave, parte 1)
+============================================================================ */
+function vCotizar(){
+  const r = S.ruta;
+  if(!r) return vRutas();
+  const disp = asientosDisponibles(r);
+  const form = enFormacion(r);
+  const faltan = faltanParaOperar(r);
+  const c = cotizar(r, S.asientos, S.viajesPorDia);
+  const h = r.horarios.find(x=>x.id===S.horarioId) || r.horarios[0];
+
+  return `
+  <section class="section"><div class="wrap">
+    <a class="small muted" style="cursor:pointer" onclick="ir('rutas')">← Volver a rutas y cobertura</a>
+    <div class="eyebrow mt-16">Cotización · ${r.id}</div>
+    <h2>${esc(r.origen)} → ${esc(r.destino)}</h2>
+
+    ${form ? `<div class="note note-warn mt-16" style="max-width:76ch">${ICON.alert}
+      <span><b>Ruta en formación.</b> Faltan ${faltan} asientos por reservar para que
+      esta ruta inicie operaciones. Puede reservar desde ahora: su cupo queda apartado
+      y la facturación comienza únicamente con el primer viaje.</span></div>` : ""}
+
+    <div class="quote-grid mt-32">
+      <div class="stack gap-16">
+        <div class="card">
+          <h4 class="mb-16">1 · ¿Cuántos asientos necesita reservar?</h4>
+          <div class="stepper">
+            <button onclick="setAsientos(S.asientos-1)" ${S.asientos<=1?"disabled":""} aria-label="Quitar un asiento">−</button>
+            <input type="number" min="1" max="${disp}" value="${S.asientos}"
+                   oninput="setAsientos(parseInt(this.value||0))" aria-label="Asientos">
+            <button onclick="setAsientos(S.asientos+1)" ${S.asientos>=disp?"disabled":""} aria-label="Agregar un asiento">+</button>
+          </div>
+          <div class="seats mt-16">
+            <div class="seats-track">
+              <div class="seats-fill ${form?'forming':''}"
+                   style="width:${Math.min(100,((r.asientosVendidos+S.asientos)/r.capacidad)*100)}%"></div>
+            </div>
+            <div class="seats-legend">
+              <span class="sec-2">${r.asientosVendidos} reservados por otras empresas + ${S.asientos} suyos</span>
+              <span class="muted">${Math.max(0, disp - S.asientos)} quedarían libres de ${r.capacidad}</span>
+            </div>
+          </div>
+          ${S.asientos >= disp ? `<div class="note note-warn mt-16">${ICON.alert}
+            <span>Está reservando la totalidad de los asientos disponibles en esta ruta.</span></div>` : ""}
+        </div>
+
+        <div class="card">
+          <h4 class="mb-16">2 · ¿Qué turno requiere?</h4>
+          <div class="seg">
+            ${r.horarios.map(x=>`<button class="${x.id===h.id?'on':''}" onclick="S.horarioId='${x.id}';marcarCotizacion();render()">
+              ${esc(x.turno)} · ${esc(x.entrada)}</button>`).join("")}
+          </div>
+          <p class="small muted mt-12">
+            Recogida a partir de las ${esc(h.recoge)} en ${esc(r.puntos[0])}, para entrada a las ${esc(h.entrada)}
+          </p>
+        </div>
+
+        <div class="card">
+          <h4 class="mb-16">3 · ¿Ida y vuelta o un solo sentido?</h4>
+          <div class="seg">
+            <button class="${S.viajesPorDia===1?'on':''}" onclick="S.viajesPorDia=1;marcarCotizacion();render()">Solo ida</button>
+            <button class="${S.viajesPorDia===2?'on':''}" onclick="S.viajesPorDia=2;marcarCotizacion();render()">Ida y vuelta</button>
+          </div>
+          <p class="small muted mt-12">Calculado sobre ${PARAMS.diasHabiles} días laborales al mes.</p>
+        </div>
+      </div>
+
+      <div class="quote-panel">
+        <div class="card card-pad-lg">
+          <div class="eyebrow" style="margin-bottom:8px">Cotización</div>
+          <div class="qline"><span class="k">Asientos reservados</span><span class="v">${c.asientos}</span></div>
+          <div class="qline"><span class="k">Tarifa por asiento / viaje</span><span class="v">${money(r.precioAsiento)}</span></div>
+          <div class="qline"><span class="k">Viajes por día</span><span class="v">${c.viajesPorDia}</span></div>
+          <div class="qline"><span class="k">Días laborales al mes</span><span class="v">${c.dias}</span></div>
+          <div class="qline"><span class="k">Costo por día</span><span class="v">${money(c.porDia)}</span></div>
+
+          <div class="qtotal">
+            <div class="xsmall" style="color:var(--violeta);font-weight:660;letter-spacing:.06em;text-transform:uppercase">Total mensual</div>
+            <div class="amount">${money0(c.mensual)}</div>
+            <div class="small sec-2 mt-8">
+              Equivale a ${money(c.porAsientoMes)} al mes por asiento
+              ${c.viajesPorDia===2?"(ida y vuelta)":"(un solo sentido)"}.
+            </div>
+          </div>
+
+          <button class="btn btn-lg btn-block mt-16" onclick="S.form={};S.errores={};ir('reservar')">
+            Reservar estos asientos ${ICON.arrow}
+          </button>
+          <p class="xsmall muted tc mt-12">Sin compromiso de pago. Confirmamos en 24 horas hábiles.</p>
+        </div>
+
+        <div class="note mt-16">${ICON.info}
+          <span><b>Monto fijo cada período.</b> La tarifa corresponde al asiento reservado
+          y no varía según la asistencia diaria del personal. La unidad recorre la ruta y
+          espera en cada punto aunque alguien falte, por lo que el asiento permanece
+          disponible para su empresa todos los días.</span>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+}
+
+/* ============================================================================
+   11. VISTA · RESERVA  (paso 4: acción clave, parte 2)
+============================================================================ */
+function vReservar(){
+  const r = S.ruta;
+  if(!r) return vRutas();
+  const c = cotizar(r, S.asientos, S.viajesPorDia);
+  const h = r.horarios.find(x=>x.id===S.horarioId) || r.horarios[0];
+  const form = enFormacion(r);
+  const f = S.form, e = S.errores;
+  const campo = (id,label,tipo,ph,hint) => `
+    <div class="field">
+      <label class="label" for="${id}">${label}</label>
+      <input class="input ${e[id]?'bad':''}" id="${id}" type="${tipo}" placeholder="${ph||''}"
+             value="${esc(f[id]||"")}" oninput="S.form['${id}']=this.value;if(S.errores['${id}']){delete S.errores['${id}'];render()}">
+      ${e[id]?`<div class="err">${ICON.alert} ${e[id]}</div>`:(hint?`<div class="hint">${hint}</div>`:"")}
+    </div>`;
+
+  return `
+  <section class="section"><div class="wrap">
+    <a class="small muted" style="cursor:pointer" onclick="ir('cotizar')">← Volver a la cotización</a>
+    <div class="eyebrow mt-16">Reserva de asientos</div>
+    <h2>Datos de la empresa</h2>
+    <p class="lede mt-8 small">
+      Con esta información confirmamos la disponibilidad de la unidad en su turno
+      y le remitimos el contrato de servicio.
+    </p>
+
+    <div class="quote-grid mt-32">
+      <div class="card card-pad-lg">
+        ${campo("empresa","Razón social de la empresa *","text","Ej. Manufacturas del Valle, S.A. de C.V.")}
+        <div class="row">
+          <div style="flex:1">${campo("contacto","Persona de contacto *","text","Nombre y apellido")}</div>
+          <div style="flex:1">${campo("cargo","Cargo","text","Ej. Jefatura de Recursos Humanos")}</div>
+        </div>
+        <div class="row">
+          <div style="flex:1">${campo("correo","Correo electrónico *","email","nombre@empresa.com")}</div>
+          <div style="flex:1">${campo("tel","Teléfono *","tel","0000-0000")}</div>
+        </div>
+        <div class="field">
+          <label class="label" for="inicio">Fecha estimada de inicio</label>
+          <select class="select" id="inicio" onchange="S.form.inicio=this.value">
+            ${["A la brevedad","En dos semanas","El próximo mes","En evaluación"]
+              .map(o=>`<option ${f.inicio===o?"selected":""}>${o}</option>`).join("")}
+          </select>
+        </div>
+        <div class="field">
+          <label class="label" for="notas">Observaciones</label>
+          <textarea class="textarea" id="notas"
+            placeholder="Turnos rotativos, punto de recogida específico, fecha de corte de planilla u otra consideración."
+            oninput="S.form.notas=this.value">${esc(f.notas||"")}</textarea>
+        </div>
+        <button class="btn btn-lg btn-block" onclick="enviarReserva()">Confirmar reserva ${ICON.arrow}</button>
+        <p class="xsmall muted tc mt-12">Al enviar autoriza que Buxz le contacte por los medios indicados.</p>
+      </div>
+
+      <div class="quote-panel">
+        <div class="card">
+          <div class="eyebrow" style="margin-bottom:8px">Resumen</div>
+          <div class="qline"><span class="k">Ruta</span><span class="v t-code">${r.id}</span></div>
+          <div class="qline"><span class="k">Origen</span><span class="v">${esc(r.origen)}</span></div>
+          <div class="qline"><span class="k">Destino</span>
+            <span class="v" style="text-align:right;max-width:190px;white-space:normal">${esc(r.destino)}</span></div>
+          <div class="qline"><span class="k">Turno</span><span class="v">${esc(h.turno)} · ${esc(h.entrada)}</span></div>
+          <div class="qline"><span class="k">Asientos</span><span class="v">${c.asientos}</span></div>
+          <div class="qline"><span class="k">Servicio</span><span class="v">${S.viajesPorDia===2?"Ida y vuelta":"Solo ida"}</span></div>
+          <div class="qtotal">
+            <div class="xsmall" style="color:var(--violeta);font-weight:660;letter-spacing:.06em;text-transform:uppercase">Total mensual</div>
+            <div class="amount">${money0(c.mensual)}</div>
+          </div>
+        </div>
+        ${form ? `<div class="note note-warn mt-16">${ICON.alert}
+          <span>Esta ruta se encuentra en formación. La facturación inicia con el primer
+          viaje, una vez completados los asientos necesarios para operar.</span></div>` : ""}
+      </div>
+    </div>
+  </div></section>`;
+}
+
+/* ============================================================================
+   12. VISTA · CONFIRMACIÓN  (paso 5)
+============================================================================ */
+function vConfirmacion(){
+  const res = Store.buscarFolio(S.folio||"");
+  if(!res) return vLanding();
+  const r = RUTAS.find(x=>x.id===res.rutaId);
+  return `
+  <section class="section"><div class="wrap" style="max-width:740px">
+    <div class="card card-pad-lg tc">
+      <div class="check-circle">${ICON.check}</div>
+      <h2>Reserva registrada</h2>
+      <p class="sec-2 mt-8">Conserve este número para consultar el estado de su solicitud.</p>
+      <div class="folio mt-16">${esc(res.folio)}</div>
+      <div class="flex gap-12 center wrapf mt-24" style="justify-content:center">
+        <button class="btn btn-ghost" onclick="copiarFolio('${esc(res.folio)}')">Copiar número</button>
+        <button class="btn btn-ghost" onclick="S.consulta='${esc(res.folio)}';S.consultaErr='';ir('estado')">Consultar estado</button>
+      </div>
+    </div>
+
+    <div class="card mt-16">
+      <h4 class="mb-16">Próximos pasos</h4>
+      <div class="timeline">
+        <div class="tl-item done">
+          <div class="tl-rail"><div class="tl-num">✓</div><div class="tl-line"></div></div>
+          <div><strong>Reserva registrada</strong>
+            <div class="small muted">Hoy · sus asientos quedan apartados</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-rail"><div class="tl-num">2</div><div class="tl-line"></div></div>
+          <div><strong>Confirmación de disponibilidad</strong>
+            <div class="small muted">Dentro de 24 horas hábiles · verificamos la unidad en el turno solicitado</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-rail"><div class="tl-num">3</div><div class="tl-line"></div></div>
+          <div><strong>Contrato y nómina de personal</strong>
+            <div class="small muted">Le remitimos el contrato y una plantilla para registrar a su personal con su punto de recogida</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-rail"><div class="tl-num">4</div></div>
+          <div><strong>Inicio del servicio</strong>
+            <div class="small muted">Una semana de prueba antes de facturar el primer período</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-16">
+      <div class="eyebrow" style="margin-bottom:8px">Detalle de la reserva</div>
+      <div class="qline"><span class="k">Empresa</span><span class="v">${esc(res.empresa)}</span></div>
+      <div class="qline"><span class="k">Ruta</span><span class="v">${esc(r.origen)} → ${esc(r.destino)}</span></div>
+      <div class="qline"><span class="k">Turno</span><span class="v">${esc(res.turno)}</span></div>
+      <div class="qline"><span class="k">Asientos reservados</span><span class="v">${res.asientos}</span></div>
+      <div class="qline"><span class="k">Total mensual</span><span class="v">${money0(res.mensual)}</span></div>
+    </div>
+
+    <div class="tc mt-24"><button class="btn btn-ghost" onclick="ir('landing')">Volver al inicio</button></div>
+  </div></section>`;
+}
+
+/* ============================================================================
+   13. VISTA · CONSULTA DE RESERVA  (paso 6)
+============================================================================ */
+function vEstado(){
+  const res = S.consulta ? Store.buscarFolio(S.consulta) : null;
+  const r = res ? RUTAS.find(x=>x.id===res.rutaId) : null;
+  return `
+  <section class="section"><div class="wrap" style="max-width:680px">
+    <div class="eyebrow">Seguimiento</div>
+    <h2>Consultar una reserva</h2>
+    <p class="lede mt-8 small">Ingrese el número que recibió al confirmar la reserva.</p>
+    <div class="searchbar mt-24">
+      <input class="input" id="q" placeholder="BXZ-0000" value="${esc(S.consulta)}"
+             oninput="S.consulta=this.value.toUpperCase()"
+             onkeydown="if(event.key==='Enter')consultarFolio()">
+      <button class="btn" onclick="consultarFolio()">Consultar</button>
+    </div>
+    ${S.consultaErr?`<div class="note note-warn mt-16">${ICON.alert}<span>${esc(S.consultaErr)}</span></div>`:""}
+    ${res?`
+      <div class="card card-pad-lg mt-24">
+        <div class="flex between center wrapf gap-12">
+          <div><div class="eyebrow" style="margin-bottom:4px">Número de reserva</div>
+            <div class="folio" style="font-size:21px">${esc(res.folio)}</div></div>
+          <span class="badge badge-info" style="padding:6px 12px">En revisión</span>
+        </div>
+        <div class="hr"></div>
+        <div class="qline"><span class="k">Empresa</span><span class="v">${esc(res.empresa)}</span></div>
+        <div class="qline"><span class="k">Contacto</span><span class="v">${esc(res.contacto)}</span></div>
+        <div class="qline"><span class="k">Ruta</span><span class="v">${esc(r?r.origen:res.rutaId)} · ${esc(res.rutaId)}</span></div>
+        <div class="qline"><span class="k">Turno</span><span class="v">${esc(res.turno)}</span></div>
+        <div class="qline"><span class="k">Asientos reservados</span><span class="v">${res.asientos}</span></div>
+        <div class="qline"><span class="k">Total mensual</span><span class="v">${money0(res.mensual)}</span></div>
+        <div class="qline"><span class="k">Fecha de solicitud</span>
+          <span class="v">${new Date(res.ts).toLocaleString("es-SV")}</span></div>
+      </div>`:""}
+    ${!res && !S.consultaErr ? `
+      <div class="note mt-24">${ICON.info}
+        <span>¿Todavía no tiene una reserva?
+        <a onclick="ir('rutas')" style="color:var(--violeta);cursor:pointer;text-decoration:underline;font-weight:600">Consulte las rutas disponibles</a>
+        y obtenga una cotización.</span></div>` : ""}
+  </div></section>`;
+}
+
+/* ============================================================================
+   14. VISTA · ZONA SIN COBERTURA  (F5 — evita el callejón sin salida)
+============================================================================ */
+function vSinCobertura(){
+  const f = S.form, e = S.errores;
+  if(S.zonaSinCobertura && !f.zona) f.zona = S.zonaSinCobertura;
+  const campo = (id,label,tipo,ph) => `
+    <div class="field">
+      <label class="label" for="d_${id}">${label}</label>
+      <input class="input ${e[id]?'bad':''}" id="d_${id}" type="${tipo}" placeholder="${ph||''}"
+             value="${esc(f[id]||"")}" oninput="S.form['${id}']=this.value;if(S.errores['${id}']){delete S.errores['${id}'];render()}">
+      ${e[id]?`<div class="err">${ICON.alert} ${e[id]}</div>`:""}
+    </div>`;
+  return `
+  <section class="section"><div class="wrap" style="max-width:680px">
+    <a class="small muted" style="cursor:pointer" onclick="ir('rutas')">← Volver a rutas y cobertura</a>
+    <div class="eyebrow mt-16">Solicitud de cobertura</div>
+    <h2>Registre la zona que necesita</h2>
+    <p class="lede mt-8 small">
+      Las rutas nuevas se priorizan según la demanda acumulada. Su registro se suma
+      al conteo de esa zona y le informaremos en cuanto la ruta sea viable.
+    </p>
+    <div class="card card-pad-lg mt-24">
+      ${campo("zona","Municipio donde reside su personal *","text","Ej. Mejicanos")}
+      ${campo("empresa","Razón social de la empresa *","text","")}
+      ${campo("correo","Correo de contacto *","email","nombre@empresa.com")}
+      <div class="field">
+        <label class="label" for="d_asientos">¿Cuántos asientos necesitaría? *</label>
+        <input class="input ${e.asientos?'bad':''}" id="d_asientos" type="number" min="1" placeholder="Ej. 6"
+               value="${esc(f.asientos||"")}"
+               oninput="S.form.asientos=this.value;if(S.errores.asientos){delete S.errores.asientos;render()}">
+        ${e.asientos?`<div class="err">${ICON.alert} ${e.asientos}</div>`
+          :`<div class="hint">Una ruta se abre al reunir aproximadamente 20 asientos entre varias empresas de la zona.</div>`}
+      </div>
+      <button class="btn btn-lg btn-block" onclick="enviarDemanda()">Registrar solicitud ${ICON.arrow}</button>
+    </div>
+  </div></section>`;
+}
+</script>
+<script>
+/* ============================================================================
+   15. ACCIONES
+============================================================================ */
+function onBuscar(v){
+  S.busqueda = v; S.hi = -1;
+  const q = v.trim().toLowerCase();
+  S.sugerencias = q.length < 2 ? [] :
+    ZONAS.filter(z => z.n.toLowerCase().includes(q) || z.d.toLowerCase().includes(q)).slice(0,7);
+  render(true);
+}
+function onTeclaBuscar(ev){
+  if(!S.sugerencias.length){ if(ev.key==="Enter") buscarZona(); return; }
+  if(ev.key==="ArrowDown"){ ev.preventDefault(); S.hi = Math.min(S.hi+1, S.sugerencias.length-1); render(true); }
+  else if(ev.key==="ArrowUp"){ ev.preventDefault(); S.hi = Math.max(S.hi-1, -1); render(true); }
+  else if(ev.key==="Enter"){
+    ev.preventDefault();
+    if(S.hi >= 0) elegirZona(S.sugerencias[S.hi].n); else buscarZona();
+  }
+  else if(ev.key==="Escape"){ S.sugerencias=[]; render(true); }
+}
+function elegirZona(n){
+  S.zona = n; S.busqueda = n; S.sugerencias = []; S.hi = -1;
+  Store.evento("busqueda_zona", { zona:n, conCobertura: rutasDeZona(n).length > 0 });
+  ir("rutas");
+}
+function buscarZona(){
+  const q = S.busqueda.trim();
+  if(!q){ toast("Indique el municipio donde reside su personal"); return; }
+  const exacta  = ZONAS.find(z => z.n.toLowerCase() === q.toLowerCase());
+  const parcial = ZONAS.find(z => z.n.toLowerCase().includes(q.toLowerCase()));
+  elegirZona((exacta || parcial || {n:q}).n);
+}
+function abrirCotizador(id){
+  S.ruta = RUTAS.find(r => r.id === id);
+  S.horarioId = S.ruta.horarios[0].id;
+  const disp = asientosDisponibles(S.ruta);
+  S.asientos = Math.max(1, Math.min(5, disp));
+  marcarCotizacion();
+  ir("cotizar");
+}
+let _cotTimer = null;
+function marcarCotizacion(){
+  clearTimeout(_cotTimer);
+  _cotTimer = setTimeout(() => {
+    if(S.ruta) Store.evento("cotizacion",
+      { ruta:S.ruta.id, asientos:S.asientos, viajes:S.viajesPorDia });
+  }, 900);
+}
+function setAsientos(n){
+  if(!S.ruta) return;
+  if(isNaN(n)) n = 1;
+  const disp = asientosDisponibles(S.ruta);
+  S.asientos = Math.max(1, Math.min(disp, n));
+  marcarCotizacion();
+  render();
+}
+function enviarReserva(){
+  const f = S.form; const e = {};
+  if(!(f.empresa||"").trim())  e.empresa  = "Indique la razón social de la empresa";
+  if(!(f.contacto||"").trim()) e.contacto = "Indique la persona de contacto";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((f.correo||"").trim())) e.correo = "Ingrese un correo electrónico válido";
+  if((f.tel||"").replace(/\D/g,"").length < 8) e.tel = "El teléfono debe contener al menos 8 dígitos";
+  S.errores = e;
+  if(Object.keys(e).length){ render(); toast("Revise los campos señalados"); return; }
+
+  const r = S.ruta;
+  const h = r.horarios.find(x=>x.id===S.horarioId) || r.horarios[0];
+  const c = cotizar(r, S.asientos, S.viajesPorDia);
+  const res = {
+    folio: nuevoFolio(),
+    empresa:(f.empresa||"").trim(), contacto:(f.contacto||"").trim(),
+    cargo:(f.cargo||"").trim(), correo:(f.correo||"").trim().toLowerCase(),
+    tel:(f.tel||"").trim(), inicio:f.inicio||"A la brevedad", notas:(f.notas||"").trim(),
+    rutaId:r.id, turno:`${h.turno} · ${h.entrada}`, asientos:S.asientos,
+    viajesPorDia:S.viajesPorDia, mensual:c.mensual, estado:"En revisión",
+    ts:new Date().toISOString()
+  };
+  Store.reservar(res);
+  /* La ocupación de la ruta se actualiza en vivo: los asientos quedan apartados. */
+  r.asientosVendidos = Math.min(r.capacidad, r.asientosVendidos + S.asientos);
+  S.folio = res.folio; S.form = {}; S.errores = {}; S.consulta = res.folio; S.consultaErr = "";
+  ir("confirmacion");
+}
+function enviarDemanda(){
+  const f = S.form; const e = {};
+  if(!(f.zona||"").trim())    e.zona    = "Indique el municipio";
+  if(!(f.empresa||"").trim()) e.empresa = "Indique la razón social de la empresa";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((f.correo||"").trim())) e.correo = "Ingrese un correo electrónico válido";
+  if(!parseInt(f.asientos))   e.asientos = "Indique cuántos asientos necesitaría";
+  S.errores = e;
+  if(Object.keys(e).length){ render(); toast("Revise los campos señalados"); return; }
+  Store.registrarDemanda({
+    zona:(f.zona||"").trim(), empresa:(f.empresa||"").trim(),
+    correo:(f.correo||"").trim().toLowerCase(),
+    asientos:parseInt(f.asientos), ts:new Date().toISOString()
+  });
+  S.form = {}; S.errores = {}; S.zonaSinCobertura = "";
+  toast("Solicitud registrada. Le informaremos cuando la ruta sea viable.");
+  ir("rutas");
+}
+function copiarFolio(f){
+  const respaldo = () => {
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = f; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      toast(ok ? "Número copiado" : "Su número de reserva es " + f);
+    }catch(e){ toast("Su número de reserva es " + f); }
+  };
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(f).then(()=>toast("Número copiado")).catch(respaldo);
+    } else respaldo();
+  }catch(e){ respaldo(); }
+}
+function consultarFolio(){
+  Store.evento("consulta_estado");
+  const s = Store.buscarFolio(S.consulta||"");
+  S.consultaErr = s ? "" : "No se encontró ese número de reserva. Verifique que esté completo (formato BXZ-0000).";
+  render();
+}
+
+/* --- acciones internas (sección de documentación) --- */
+function setParam(campo, valor, rutaId){
+  const v = parseFloat(valor);
+  if(isNaN(v) || v <= 0) return;
+  if(rutaId){
+    const r = RUTAS.find(x=>x.id===rutaId);
+    if(r) r[campo] = campo === "asientosVendidos" ? Math.round(v) : v;
+  } else {
+    PARAMS[campo] = Math.round(v);
+  }
+  render();
+}
+function reiniciarDatos(){
+  let ok;
+  try{ ok = confirm("Se eliminarán las reservas y las mediciones guardadas en este navegador. ¿Continuar?"); }
+  catch(e){ ok = undefined; }
+  if(ok === undefined){
+    if(!reiniciarDatos._armado){
+      reiniciarDatos._armado = true;
+      toast("Vuelva a pulsar para confirmar el borrado");
+      setTimeout(()=>{ reiniciarDatos._armado = false; }, 4000);
+      return;
+    }
+    ok = true;
+  }
+  if(ok){ reiniciarDatos._armado = false; Store.reiniciar(); toast("Datos reiniciados"); render(); }
+}
+function exportarCSV(){
+  const d = Store.leer();
+  const filas = [["folio","fecha","empresa","contacto","cargo","correo","telefono","ruta","turno","asientos","viajes_dia","mensual_usd","inicio","notas"]];
+  d.reservas.forEach(s => filas.push([s.folio,s.ts,s.empresa,s.contacto,s.cargo,s.correo,s.tel,s.rutaId,s.turno,s.asientos,s.viajesPorDia,s.mensual.toFixed(2),s.inicio,(s.notas||"").replace(/\n/g," ")]));
+  filas.push([]);
+  filas.push(["ZONAS SIN COBERTURA REGISTRADAS"]);
+  filas.push(["zona","empresa","correo","asientos","fecha"]);
+  d.demanda.forEach(x => filas.push([x.zona,x.empresa,x.correo,x.asientos,x.ts]));
+  const csv = filas.map(f => f.map(c => `"${String(c==null?"":c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  try{
+    const url = URL.createObjectURL(new Blob(["﻿"+csv], {type:"text/csv;charset=utf-8"}));
+    const a = document.createElement("a");
+    a.href = url; a.download = "buxz-reservas.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    toast("Archivo CSV descargado");
+  }catch(e){
+    try{
+      const w = window.open("", "_blank");
+      w.document.write("<pre>" + esc(csv) + "</pre>");
+      toast("Descarga bloqueada — se abrió el CSV para copiarlo");
+    }catch(e2){ toast("Este visor bloquea las descargas. Abra la página en una pestaña normal."); }
+  }
+}
+</script>
+<script>
+/* ============================================================================
+   16. SECCIÓN INTERNA · documentación del curso
+   No se enlaza desde la navegación ni desde el pie de página. Se accede por
+   URL directa: #/proyecto y #/medicion
+============================================================================ */
+const DOC_TABS = [
+  ["paso0","Paso 0 · Antes de construir"],
+  ["funciones","Hoja de funciones"],
+  ["flujo","Flujo crítico"],
+  ["journey","Customer Journey"],
+  ["cobro","Modelo de cobro"],
+  ["metricas","Métricas"],
+  ["pruebas","Pruebas de usuario"],
+  ["params","Parámetros del modelo"]
+];
+
+const FUNCIONES = [
+  {id:"F1", f:"Consultar rutas y disponibilidad por zona",
+   h:"Como responsable de RRHH quiero ver si existe una ruta que pase por donde reside mi personal y cuántos asientos quedan, para saber en segundos si Buxz me sirve.",
+   p:"Debe", e:"Medio", mvp:true},
+  {id:"F2", f:"Cotizar asientos en línea",
+   h:"Como responsable de RRHH quiero conocer el costo mensual sin tener que llamar a nadie, para presentarlo a mi jefatura con una cifra concreta.",
+   p:"Debe", e:"Alto", mvp:true},
+  {id:"F3", f:"Reservar asientos",
+   h:"Como responsable de RRHH quiero dejar apartados los asientos con los datos de mi empresa, para iniciar el proceso sin esperar una devolución de llamada.",
+   p:"Debe", e:"Medio", mvp:true, clave:true},
+  {id:"F4", f:"Confirmación con número de reserva y seguimiento",
+   h:"Como responsable de RRHH quiero un comprobante y saber qué sigue, para tener certeza de que la solicitud se registró.",
+   p:"Debe", e:"Bajo", mvp:true},
+  {id:"F5", f:"Registrar una zona sin cobertura",
+   h:"Como responsable de RRHH quiero informar que necesito una zona que aún no cubren, para que me contacten al abrirla en lugar de quedarme sin opción.",
+   p:"Debería", e:"Bajo", mvp:true},
+  {id:"F6", f:"Cargar la nómina de personal",
+   h:"Como responsable de RRHH quiero registrar a mi personal con su punto de recogida, para que el conductor sepa a quién espera.",
+   p:"Podría", e:"Alto", mvp:false, concierge:"Plantilla de Excel que se completa con el cliente"},
+  {id:"F7", f:"Nómina del conductor y control de asistencia",
+   h:"Como conductor quiero ver a quién recojo y registrar quién abordó, para dejar constancia del servicio.",
+   p:"Podría", e:"Alto", mvp:false, concierge:"Nómina impresa que el conductor firma y fotografía",
+   nota:"Con el cobro por asiento ya no condiciona la facturación; sirve como indicador de calidad"},
+  {id:"F8", f:"Reporte de uso del período",
+   h:"Como responsable de RRHH quiero ver qué tanto se aprovecharon los asientos que contraté, para decidir si renuevo o ajusto la cantidad.",
+   p:"Podría", e:"Medio", mvp:false, concierge:"Hoja de cálculo remitida por correo al cierre del mes"},
+  {id:"F9", f:"Portal de cliente con usuario y contraseña",
+   h:"Como responsable de RRHH quiero acceder a mi cuenta y consultar mi historial, para no depender del correo.",
+   p:"Podría", e:"Alto", mvp:false},
+  {id:"F10", f:"Seguimiento de la unidad en tiempo real",
+   h:"Como responsable de RRHH quiero ver la ubicación de la unidad, para anticipar retrasos.",
+   p:"No ahora", e:"Alto", mvp:false},
+  {id:"F11", f:"Pago en línea con tarjeta",
+   h:"Como empresa quiero liquidar la factura desde la plataforma.",
+   p:"No ahora", e:"Alto", mvp:false, nota:"Las empresas pagan por transferencia y con plazos de crédito"},
+  {id:"F12", f:"Aplicación nativa iOS y Android",
+   h:"Como usuario quiero una aplicación instalable en mi teléfono.",
+   p:"No ahora", e:"Alto", mvp:false, nota:"La web app cumple la misma función sin exigir instalación"},
+  {id:"F13", f:"Integración con el sistema contable del cliente",
+   h:"Como empresa quiero que la factura ingrese automáticamente a mi contabilidad.",
+   p:"No ahora", e:"Alto", mvp:false, nota:"Distinta en cada cliente"},
+  {id:"F14", f:"Generación automática de rutas",
+   h:"Como Buxz quiero que el sistema arme las rutas por sí solo.",
+   p:"No ahora", e:"Alto", mvp:false, nota:"Contradice el modelo de rutas fijas"}
+];
+
+const JOURNEY = [
+  {t:"1 · Descubrimiento",
+   hace:"Recibe el enlace de un contacto o lo encuentra buscando transporte de personal.",
+   siente:"Escéptico. Ha perdido tiempo con transportistas que no responden.",
+   fric:"No distingue si es un operador serio o un intermediario más.",
+   buxz:"La página comunica qué hace y en qué zonas opera en los primeros cinco segundos.", fn:""},
+  {t:"2 · Evaluación",
+   hace:"Consulta el municipio donde reside la mayor parte de su personal.",
+   siente:"Expectante. Es la pregunta que define si continúa.",
+   fric:"Si su zona no aparece, abandona y no regresa.",
+   buxz:"Muestra rutas de la zona con asientos disponibles; si no hay, ofrece registrar la demanda.", fn:"F1 · F5"},
+  {t:"3 · Cotización",
+   hace:"Indica cuántos asientos necesita y en qué turno, y obtiene el costo mensual.",
+   siente:"Sorprendido de disponer de una cifra sin llamar a nadie.",
+   fric:"Desconfía de un precio cuya composición no comprende.",
+   buxz:"Presenta el desglose completo y una tarifa fija por asiento, sin variables ocultas.", fn:"F2"},
+  {t:"4 · Reserva",
+   hace:"Registra los datos de la empresa y confirma la reserva.",
+   siente:"Cauteloso. No desea comprometerse ni recibir insistencia comercial.",
+   fric:"Teme que el formulario derive en llamadas de venta.",
+   buxz:"Formulario breve, sin compromiso de pago y con el plazo de respuesta a la vista.", fn:"F3"},
+  {t:"5 · Confirmación",
+   hace:"Recibe el número de reserva y conoce los cuatro pasos siguientes.",
+   siente:"Tranquilo: sabe qué esperar y en qué plazo.",
+   fric:"El silencio posterior a un formulario erosiona la confianza.",
+   buxz:"Número consultable y cronograma con plazos concretos.", fn:"F4"},
+  {t:"6 · Operación",
+   hace:"Inicia la semana de prueba, registra su personal y recibe el reporte del período.",
+   siente:"Evaluando la renovación.",
+   fric:"Un retraso reiterado o una factura que no cuadra impiden la renovación.",
+   buxz:"Operación concierge: nómina impresa, control manual y reporte en hoja de cálculo.", fn:"F6-F8 (concierge)"}
+];
+
+function vProyecto(){
+  const tab = S.docTab;
+  return `
+  <section class="section"><div class="wrap">
+    <div class="eyebrow">Documentación interna</div>
+    <h2>Buxz · MVP digital</h2>
+    <p class="lede mt-8 small">
+      Entregables de la guía <em>Tu primer MVP digital</em>. Esta sección no forma parte
+      del producto: es la evidencia del proceso para la clase de Emprendimiento y no se
+      enlaza desde la navegación del cliente.
+    </p>
+    <div class="doc-nav mt-24">
+      ${DOC_TABS.map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="S.docTab='${k}';render()">${l}</button>`).join("")}
+    </div>
+    ${ {paso0:docPaso0, funciones:docFunciones, flujo:docFlujo, journey:docJourney,
+        cobro:docCobro, metricas:docMetricas, pruebas:docPruebas, params:docParams}[tab]() }
+    <div class="hr" style="margin:36px 0"></div>
+    <div class="flex gap-12 wrapf">
+      <button class="btn btn-ghost" onclick="ir('medicion')">Panel de medición ${ICON.arrow}</button>
+      <button class="btn btn-ghost" onclick="ir('landing')">Ver el producto</button>
+    </div>
+  </div></section>`;
+}
+
+function docPaso0(){
+  return `
+  <div class="grid g2">
+    <div class="card card-pad-lg">
+      <div class="eyebrow">1 · Problema</div>
+      <div class="quote-block">
+        Las empresas con personal que reside lejos pierden horas de producción por la
+        impuntualidad y el ausentismo que provoca el transporte público en hora pico.
+      </div>
+      <p class="small muted mt-12">Una frase, sin mencionar la solución, como pide la guía.</p>
+    </div>
+    <div class="card card-pad-lg">
+      <div class="eyebrow">2 · Usuario</div>
+      <dl class="kv">
+        <dt>Quién</dt><dd>Responsable de Recursos Humanos de una planta o maquila del Área Metropolitana de San Salvador.</dd>
+        <dt>Contexto</dt><dd>Entre 80 y 300 operarios en dos o tres turnos, con personal residiendo a 40–90 minutos de la planta.</dd>
+        <dt>Rutina</dt><dd>Revisa marcaciones cada mañana. La falta de personal al inicio del turno es su responsabilidad.</dd>
+        <dt>Decisión</dt><dd>Construye y presenta el caso; la aprobación final suele recaer en gerencia general.</dd>
+      </dl>
+      <div class="note note-warn mt-16">${ICON.alert}
+        <span>Perfil <b>hipotético</b>. Los rangos y la rutina son supuestos del equipo,
+        no datos de campo. Se confirman con las cinco entrevistas.</span></div>
+    </div>
+    <div class="card card-pad-lg">
+      <div class="eyebrow">3 · Hipótesis</div>
+      <div class="quote-block">
+        Creemos que <b>un responsable de RRHH</b> reservará asientos de transporte por
+        su cuenta en una página web porque <b>hoy cotizar transporte de personal le
+        toma semanas de llamadas y carece de una referencia para comparar</b>.
+      </div>
+      <p class="small sec-2 mt-12">
+        El MVP pone a prueba exactamente esto: si un responsable de RRHH llega solo hasta
+        el final del formulario, la hipótesis sobrevive. Si abandona en la cotización, el
+        problema no le resulta suficientemente costoso o el precio no le cierra.
+      </p>
+    </div>
+    <div class="card card-pad-lg" style="border-color:#F3DFC0">
+      <div class="eyebrow" style="color:var(--warn)">4 · Evidencia</div>
+      <dl class="kv">
+        <dt>Requisito</dt><dd>Mínimo cinco conversaciones con usuarios reales antes de la primera línea de código.</dd>
+        <dt>Estado</dt><dd><b style="color:var(--warn)">Pendiente con el cliente actual.</b> Las entrevistas realizadas hasta ahora fueron a trabajadores, no a responsables de RRHH.</dd>
+        <dt>Disponible</dt><dd>Levantamiento del problema del trabajador, de la actividad "de idea a problema". Sirve como argumento de venta, no como validación del cliente que paga.</dd>
+        <dt>Pendiente</dt><dd>Cinco entrevistas con responsables de RRHH. Guion en la pestaña
+          <a onclick="S.docTab='pruebas';render()" style="color:var(--violeta);cursor:pointer;text-decoration:underline">Pruebas de usuario</a>.</dd>
+      </dl>
+      <div class="note note-warn mt-16">${ICON.alert}
+        <span>La guía lo señala como advertencia: <em>"si ya sabes qué herramienta vas a
+        usar pero no sabes a quién le duele el problema, vas al revés"</em>. Queda
+        documentado en lugar de omitirse: el giro a B2B cambió el cliente y la evidencia
+        aún no alcanza al cambio.</span></div>
+    </div>
+  </div>`;
+}
+
+function docFunciones(){
+  const bcls = {"Debe":"badge-ok","Debería":"badge-warn","Podría":"badge-mute","No ahora":"badge-mute"};
+  const enMvp = FUNCIONES.filter(f=>f.mvp).length;
+  return `
+  <div class="note note-accent mb-24">${ICON.info}
+    <span><b>Regla de oro de la guía:</b> un MVP no es una versión reducida de todo, sino la
+    versión completa de una sola cosa. De las ${FUNCIONES.length} funciones que Buxz podría
+    tener, <b>${enMvp} integran el MVP</b> y una sola constituye la acción clave:
+    <b>reservar asientos</b>.</span></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th style="width:44px">#</th><th style="min-width:190px">Función</th>
+        <th style="min-width:280px">Historia de usuario</th>
+        <th>Prioridad</th><th>Esfuerzo</th><th>¿MVP?</th>
+      </tr></thead>
+      <tbody>
+        ${FUNCIONES.map(f=>`
+          <tr${f.mvp?' style="background:var(--violeta-soft)"':''}>
+            <td class="t-code">${f.id}</td>
+            <td><strong>${esc(f.f)}</strong>
+              ${f.clave?'<div class="xsmall" style="color:var(--violeta);margin-top:3px;font-weight:600">◆ Acción clave</div>':""}
+              ${f.concierge?`<div class="xsmall muted" style="margin-top:3px">Concierge: ${esc(f.concierge)}</div>`:""}
+              ${f.nota?`<div class="xsmall muted" style="margin-top:3px">${esc(f.nota)}</div>`:""}
+            </td>
+            <td>${esc(f.h)}</td>
+            <td><span class="badge ${bcls[f.p]}">${f.p}</span></td>
+            <td>${f.e}</td>
+            <td>${f.mvp?'<span class="badge badge-info">Sí</span>':'<span class="muted">No</span>'}</td>
+          </tr>`).join("")}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2 mt-24">
+    <div class="card">
+      <h4>La prueba del corte</h4>
+      <p class="small sec-2 mt-8">
+        Para cada función se preguntó: si se elimina, ¿el usuario continúa resolviendo su
+        problema? F6 a F14 superaron esa prueba — el responsable de RRHH puede reservar sus
+        asientos sin ninguna de ellas. F1 a F5 no: sin consultar rutas, sin precio, sin poder
+        reservar y sin confirmación, no hay producto.
+      </p>
+    </div>
+    <div class="card">
+      <h4>Efecto del cobro por asiento</h4>
+      <p class="small sec-2 mt-8">
+        El cambio a tarifa por asiento reservado degradó a F7 de crítica a deseable. Cuando
+        la facturación dependía de la asistencia, un error del conductor costaba dinero y
+        generaba disputas. Ahora el control de asistencia mide calidad de servicio, no
+        ingresos.
+      </p>
+    </div>
+  </div>`;
+}
+
+function docFlujo(){
+  const pasos = [
+    {n:"1", t:"Llega", d:"Ingresa al enlace desde un contacto, LinkedIn o una feria."},
+    {n:"2", t:"Comprende en 5 s", d:"Titular, zonas con cobertura y buscador. Nada más sobre el pliegue."},
+    {n:"3", t:"Elige", d:"Consulta su municipio y observa las rutas con asientos disponibles."},
+    {n:"4", t:"Acción clave", d:"Cotiza los asientos y confirma la reserva con los datos de su empresa.", key:true},
+    {n:"5", t:"Confirmación", d:"Recibe el número de reserva y el cronograma de los cuatro pasos siguientes."},
+    {n:"6", t:"Regresa", d:"Consulta el estado de su reserva con el número recibido."}
+  ];
+  return `
+  <div class="card card-pad-lg mb-24">
+    <h3 class="mb-16">El camino crítico</h3>
+    <div class="flow">
+      ${pasos.map((p,i)=>`
+        <div class="fstep ${p.key?'key':''}">
+          <div class="fn">${p.n}</div>
+          <div style="font-weight:660;font-size:14px;margin-bottom:5px">${p.t}</div>
+          <div class="xsmall sec-2">${p.d}</div>
+        </div>
+        ${i<pasos.length-1?`<div class="farrow">${ICON.arrow}</div>`:""}
+      `).join("")}
+    </div>
+    <div class="note note-accent mt-24">${ICON.info}
+      <span><b>Una sola acción clave:</b> reservar asientos. Todo lo que no pertenece a este
+      camino no se construyó. El paso 4 es el único que debe resultar imposible de fallar,
+      y por ello concentra la validación de campos, el resumen permanente a la vista y la
+      confirmación inmediata.</span></div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card">
+      <h4>Sin callejones sin salida</h4>
+      <p class="small sec-2 mt-8">Las dos pantallas que podían dejar al usuario sin camino
+      eran "no cubrimos su zona" y "ruta sin asientos disponibles". Ambas derivan al registro
+      de demanda (F5), que convierte una negativa en información.</p>
+    </div>
+    <div class="card">
+      <h4>Rutas en formación</h4>
+      <p class="small sec-2 mt-8">Una ruta que aún no reúne los asientos necesarios se muestra
+      igualmente y admite reservas. Es el mecanismo que permite a una empresa pequeña acceder
+      al servicio sin contratar una unidad completa.</p>
+    </div>
+    <div class="card">
+      <h4>Recorra el flujo</h4>
+      <p class="small sec-2 mt-8">Complete el camino y observe cómo se mueven las cifras del
+      embudo en el panel de medición.</p>
+      <button class="btn btn-soft mt-12" onclick="ir('landing')">Ir al producto ${ICON.arrow}</button>
+    </div>
+  </div>`;
+}
+
+function docJourney(){
+  return `
+  <p class="lede mb-24 small">
+    Recorrido del cliente que paga — el responsable de Recursos Humanos — desde que conoce
+    Buxz hasta que decide si renueva.
+  </p>
+  <div class="journey">
+    ${JOURNEY.map(j=>`
+      <div class="jstage">
+        <h4>${j.t}</h4>
+        <div class="jrow"><span class="jk">Qué hace</span>${esc(j.hace)}</div>
+        <div class="jrow"><span class="jk">Qué percibe</span>${esc(j.siente)}</div>
+        <div class="jrow" style="color:var(--crit)"><span class="jk" style="color:var(--crit)">Fricción</span>${esc(j.fric)}</div>
+        <div class="jrow"><span class="jk">Respuesta de Buxz</span>${esc(j.buxz)}</div>
+        ${j.fn?`<div class="jfn">${esc(j.fn)}</div>`:""}
+      </div>`).join("")}
+  </div>
+  <div class="note mt-24">${ICON.info}
+    <span>Las etapas 1 a 5 están construidas en la web app. La etapa 6 se opera en modalidad
+    concierge: con una sola ruta activa, la nómina del conductor y el reporte del período los
+    gestiona una persona. Es la frontera exacta entre lo que el MVP automatiza y lo que aún no.</span></div>`;
+}
+
+function docCobro(){
+  const r = RUTAS[0];
+  const min = asientosMinimos(r);
+  return `
+  <div class="card card-pad-lg mb-24">
+    <div class="eyebrow">Regla de facturación</div>
+    <h3>Cobro por asiento reservado</h3>
+    <div class="quote-block mt-16" style="font-family:ui-monospace,Menlo,monospace;font-size:14px">
+      Total del período = asientos reservados × tarifa por asiento × viajes por día × días laborales
+    </div>
+    <p class="sec-2 mt-16 small" style="line-height:1.62">
+      El costo de operar un viaje es prácticamente el mismo con la unidad llena o a media
+      carga: el combustible, el conductor, la unidad y el seguro no varían con la cantidad de
+      pasajeros que aborden. Atar el ingreso a la asistencia diaria trasladaba a Buxz un
+      riesgo que controla la empresa, no el operador.
+    </p>
+    <div class="grid g3 mt-24">
+      <div class="card">
+        <h4>Ingreso previsible</h4>
+        <p class="small sec-2 mt-8">El monto del período no depende del ausentismo. La unidad
+        conserva su margen aunque falte personal.</p>
+      </div>
+      <div class="card">
+        <h4>Facturación sin disputas</h4>
+        <p class="small sec-2 mt-8">No hay que contar abordajes para emitir la factura. Se
+        elimina la principal fuente de fricción con el cliente.</p>
+      </div>
+      <div class="card">
+        <h4>Margen incorporado</h4>
+        <p class="small sec-2 mt-8">La utilidad va dentro de la tarifa del asiento, no en un
+        piso mínimo. Desaparece el problema del punto de equilibrio con utilidad cero.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-pad-lg mb-24">
+    <h4 class="mb-12">Umbral para abrir una ruta</h4>
+    <p class="small sec-2">
+      El mínimo dejó de ser una condición que la empresa deba entender y pasó a ser un
+      criterio interno de operación: una ruta se abre cuando los asientos vendidos cubren
+      su costo.
+    </p>
+    <div class="quote-block mt-16" style="font-family:ui-monospace,Menlo,monospace;font-size:13.5px">
+      Asientos mínimos = costo fijo del viaje ÷ tarifa por asiento
+    </div>
+    <p class="small sec-2 mt-12">
+      Para ${r.id}: ${money(r.costoFijoViaje)} ÷ ${money(r.precioAsiento)} =
+      <b style="color:var(--ink)">${min} asientos</b> de ${r.capacidad}.
+      Por debajo de ese número la ruta figura como <b>en formación</b> y admite reservas
+      que se acumulan hasta activarla.
+    </p>
+  </div>
+
+  <div class="card card-pad-lg">
+    <h4 class="mb-12">La objeción previsible y su respuesta</h4>
+    <div class="quote-block">"¿Por qué debo pagar un asiento que quedó vacío?"</div>
+    <ol class="small sec-2 mt-16" style="padding-left:19px;line-height:1.9">
+      <li>Porque el asiento sí viajó: la unidad recorrió la ruta y esperó en el punto de recogida.</li>
+      <li>Porque la tarifa es menor precisamente por eso — no incorpora un margen de protección por ausentismo.</li>
+      <li>Porque la asistencia la controla la empresa, no el operador del transporte.</li>
+    </ol>
+    <p class="small sec-2 mt-16">
+      Efecto secundario favorable: al pagar por el asiento, la empresa tiene incentivo para
+      que su personal lo utilice, lo que incrementa el valor percibido y favorece la renovación.
+    </p>
+  </div>`;
+}
+
+function docMetricas(){
+  return `
+  <div class="note note-accent mb-24">${ICON.info}
+    <span><b>Definidas antes de lanzar.</b> El valor base es cero en las cuatro: la aplicación
+    se publica sin tráfico y todo lo que se registre a partir de ese momento constituye dato real.</span></div>
+
+  <div class="grid g3 mb-24">
+    <div class="card" style="border-color:var(--violeta-line)">
+      <div class="eyebrow" style="margin-bottom:6px">Métrica principal</div>
+      <h4>Tasa de activación</h4>
+      <p class="small sec-2 mt-8">Porcentaje de visitantes que completa una reserva. Es la
+      acción clave del producto y la única que demuestra intención real.</p>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="small"><b style="color:var(--ink)">Meta de la primera semana:</b> que al menos
+      uno de cada cinco responsables de RRHH que abran el enlace llegue hasta el final.</div>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:6px">Apoyo 1</div>
+      <h4>Comprensión de la oferta</h4>
+      <p class="small sec-2 mt-8">Porcentaje de visitantes que alcanza la pantalla de cotización.
+      Si resulta bajo, el problema está en el mensaje o en la cobertura, no en el precio.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:6px">Apoyo 2</div>
+      <h4>Demanda no atendida</h4>
+      <p class="small sec-2 mt-8">Zonas sin cobertura registradas. Determina qué ruta abrir a
+      continuación y convierte un rechazo en información.</p>
+    </div>
+  </div>
+
+  <div class="card card-pad-lg">
+    <h4 class="mb-12">Por qué no se mide el retorno a los siete días</h4>
+    <p class="small sec-2">
+      La guía propone el retorno como métrica de apoyo y para un producto de consumo resulta
+      pertinente. En un modelo B2B no lo es: un responsable de RRHH no contrata transporte cada
+      semana. La decisión es única y luego se renueva mensualmente. Se sustituye por
+      <b style="color:var(--ink)">comprensión de la oferta</b>, medible en una semana, y se
+      reserva la renovación mensual como métrica de largo plazo cuando exista un contrato vigente.
+    </p>
+  </div>
+
+  <div class="tc mt-24">
+    <button class="btn btn-lg" onclick="ir('medicion')">Abrir el panel de medición ${ICON.arrow}</button>
+  </div>`;
+}
+
+function docPruebas(){
+  const preguntas = [
+    "¿Qué esperaba que ocurriera al pulsar ahí?",
+    "¿Qué le resultó confuso?",
+    "¿El precio le parece alto, bajo o el esperado? ¿Comparado con qué?",
+    "¿Volvería a utilizarlo?",
+    "¿Lo pagaría? ¿Quién tendría que autorizarlo?"
+  ];
+  return `
+  <div class="grid g2 mb-24">
+    <div class="card card-pad-lg">
+      <div class="eyebrow">La tarea</div>
+      <div class="quote-block">
+        "Tiene 25 operarios que residen en Soyapango y entran a las seis de la mañana.
+        Averigüe cuánto costaría transportarlos y deje la reserva hecha."
+      </div>
+      <p class="small muted mt-12">Una tarea, no una demostración guiada. No se explica nada antes.</p>
+    </div>
+    <div class="card card-pad-lg">
+      <div class="eyebrow">Las cinco reglas</div>
+      <ol class="small sec-2" style="padding-left:19px;line-height:1.9">
+        <li>Asignar una tarea, no dar un recorrido.</li>
+        <li>Guardar silencio y observar. Cada explicación encubre un error de diseño.</li>
+        <li>Anotar dónde duda: las pausas informan más que los elogios.</li>
+        <li>Preguntar al final, nunca durante.</li>
+        <li>Separar opinión de conducta. "Se ve bien" no constituye dato.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="card card-pad-lg mb-24">
+    <h4 class="mb-16">Preguntas de cierre</h4>
+    <div class="grid g2">
+      ${preguntas.map((p,i)=>`<div class="flex gap-12"><div class="tl-num">${i+1}</div><div class="small sec-2">${p}</div></div>`).join("")}
+    </div>
+  </div>
+  <div class="card card-pad-lg">
+    <div class="flex between center wrapf gap-12 mb-16">
+      <h4>Bitácora de las cinco sesiones</h4>
+      <span class="badge badge-warn">0 de 5 completadas</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Perfil del participante</th><th>¿Completó la tarea?</th><th>Dónde se detuvo</th><th>Frase textual</th></tr></thead>
+        <tbody>${[1,2,3,4,5].map(i=>`<tr>
+          <td class="t-code">P${i}</td><td class="muted">Por registrar</td>
+          <td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>`).join("")}</tbody>
+      </table>
+    </div>
+    <div class="note note-warn mt-16">${ICON.alert}
+      <span>Esta tabla se completa a mano después de cada sesión. Forma parte del checklist de
+      entrega y no puede fabricarse: son notas de conversaciones que aún no han ocurrido.</span></div>
+  </div>`;
+}
+
+function docParams(){
+  return `
+  <div class="note note-warn mb-24">${ICON.alert}
+    <span><b>Todos estos valores son de ejemplo.</b> No provienen de cotizaciones reales de
+    combustible, salario de conductor ni renta de unidad. Al modificarlos, la aplicación
+    recalcula de inmediato — permite responder en vivo si se cuestiona el origen del precio.</span></div>
+
+  <div class="card card-pad-lg mb-24" style="max-width:420px">
+    <h4 class="mb-16">Parámetro general</h4>
+    <div class="field">
+      <label class="label">Días laborales al mes</label>
+      <input class="input" type="number" min="1" max="31" value="${PARAMS.diasHabiles}"
+             onchange="setParam('diasHabiles',this.value)">
+    </div>
+  </div>
+
+  <h4 class="mb-16">Costos y tarifas por ruta</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Ruta</th><th class="n">Costo fijo / viaje</th><th class="n">Tarifa / asiento</th>
+        <th class="n">Capacidad</th><th class="n">Reservados</th>
+        <th class="n">Mínimo para operar</th><th class="n">Utilidad a plena ocupación</th>
+      </tr></thead>
+      <tbody>
+        ${RUTAS.map(r=>{
+          const min = asientosMinimos(r);
+          const util = r.capacidad * r.precioAsiento - r.costoFijoViaje;
+          return `<tr>
+            <td><strong>${r.id}</strong><div class="xsmall muted">${esc(r.origen)}</div></td>
+            <td class="n"><input class="input" style="width:94px;padding:6px 9px;text-align:right" type="number" step="0.5"
+                 value="${r.costoFijoViaje}" onchange="setParam('costoFijoViaje',this.value,'${r.id}')"></td>
+            <td class="n"><input class="input" style="width:86px;padding:6px 9px;text-align:right" type="number" step="0.05"
+                 value="${r.precioAsiento}" onchange="setParam('precioAsiento',this.value,'${r.id}')"></td>
+            <td class="n">${r.capacidad}</td>
+            <td class="n"><input class="input" style="width:74px;padding:6px 9px;text-align:right" type="number" min="0" max="${r.capacidad}"
+                 value="${r.asientosVendidos}" onchange="setParam('asientosVendidos',this.value,'${r.id}')"></td>
+            <td class="n"><strong>${min}</strong> asientos</td>
+            <td class="n" style="color:${util>0?'var(--good)':'var(--crit)'}">${money(util)} / viaje</td>
+          </tr>`;
+        }).join("")}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card card-pad-lg mt-24">
+    <h4 class="mb-12">Origen de las cifras</h4>
+    <p class="small sec-2">
+      Los precios de combustible y el salario mínimo utilizados en el análisis de costos
+      corresponden a datos publicados de agosto de 2026. El rendimiento de combustible, la
+      cuota de la unidad y el costo de mantenimiento y seguro son estimaciones del equipo y
+      deben sustituirse con cotizaciones reales de transportistas antes de la entrega final.
+    </p>
+  </div>`;
+}
+</script>
+<script>
+/* ============================================================================
+   17. VISTA INTERNA · PANEL DE MEDICIÓN
+   Rampa ordinal violeta validada contra la superficie clara (#FFFFFF):
+   luminosidad monótona, separación entre pasos y contraste del extremo claro.
+   Todos los valores llevan etiqueta directa, de modo que el color nunca es
+   el único canal de lectura.
+============================================================================ */
+const RAMP = ["#BDA0EE","#9B6BE6","#7C3FDC","#5B21B6"];
+
+function vMedicion(){
+  const e = Store.embudo();
+  const d = Store.leer();
+  const pct = (a,b) => b > 0 ? Math.round((a/b)*100) : 0;
+  const activacion  = pct(e.reservas, e.visitas);
+  const comprension = pct(e.cotizaciones, e.visitas);
+  const maxv = Math.max(e.visitas, 1);
+  const asientosReservados = d.reservas.reduce((s,r)=>s+(r.asientos||0),0);
+
+  const pasos = [
+    {l:"Visitas",             v:e.visitas,      c:RAMP[0]},
+    {l:"Consultó su zona",    v:e.busquedas,    c:RAMP[1]},
+    {l:"Llegó a cotizar",     v:e.cotizaciones, c:RAMP[2]},
+    {l:"Completó la reserva", v:e.reservas,     c:RAMP[3]}
+  ];
+
+  return `
+  <section class="section"><div class="wrap">
+    <div class="flex between center wrapf gap-12">
+      <div>
+        <div class="eyebrow">Medición</div>
+        <h2>Embudo del flujo crítico</h2>
+      </div>
+      <div class="flex gap-8 wrapf">
+        <button class="btn btn-ghost" onclick="ir('proyecto')">Documentación</button>
+        <button class="btn btn-ghost" onclick="exportarCSV()">Descargar CSV</button>
+        <button class="btn btn-ghost" onclick="reiniciarDatos()">Reiniciar datos</button>
+      </div>
+    </div>
+
+    <div class="grid g4 mt-24">
+      <div class="tile">
+        <div class="tl">Tasa de activación</div>
+        <div class="tv">${activacion}<span style="font-size:19px;color:var(--ink-3)">%</span></div>
+        <div class="td">Métrica principal · visitantes que reservan</div>
+      </div>
+      <div class="tile">
+        <div class="tl">Comprensión de la oferta</div>
+        <div class="tv">${comprension}<span style="font-size:19px;color:var(--ink-3)">%</span></div>
+        <div class="td">Apoyo 1 · visitantes que llegan a cotizar</div>
+      </div>
+      <div class="tile">
+        <div class="tl">Asientos reservados</div>
+        <div class="tv">${asientosReservados}</div>
+        <div class="td">En ${d.reservas.length} reserva${d.reservas.length===1?"":"s"}</div>
+      </div>
+      <div class="tile">
+        <div class="tl">Zonas sin cobertura pedidas</div>
+        <div class="tv">${d.demanda.length}</div>
+        <div class="td">Apoyo 2 · demanda no atendida</div>
+      </div>
+    </div>
+
+    <div class="card card-pad-lg mt-24">
+      <h4 class="mb-16">Paso a paso del embudo</h4>
+      <div class="funnel">
+        ${pasos.map(p=>`
+          <div class="fnl-row">
+            <div class="fnl-label">${p.l}</div>
+            <div class="fnl-track"><div class="fnl-bar" style="width:${(p.v/maxv)*100}%;background:${p.c}"></div></div>
+            <div class="fnl-val">${p.v}</div>
+          </div>`).join("")}
+      </div>
+      <div class="note mt-24">${ICON.info}
+        <span>Los datos se guardan ${Store.disponible ? "en este navegador" : "solo en memoria (el navegador bloqueó el almacenamiento)"}.
+        ${SUPABASE.activo ? "Supabase está activo: también se envían al servidor."
+          : "Para consolidar las pruebas de usuario en un registro central, active Supabase siguiendo el README."}</span></div>
+    </div>
+
+    ${d.reservas.length ? `
+      <h4 class="mt-32 mb-16">Reservas registradas</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Folio</th><th>Empresa</th><th>Contacto</th><th>Ruta</th>
+          <th class="n">Asientos</th><th class="n">Mensual</th><th>Fecha</th></tr></thead>
+        <tbody>${d.reservas.slice().reverse().map(s=>`<tr>
+          <td class="t-code">${esc(s.folio)}</td>
+          <td><strong>${esc(s.empresa)}</strong></td>
+          <td>${esc(s.contacto)}<div class="xsmall muted">${esc(s.correo)}</div></td>
+          <td class="t-code">${esc(s.rutaId)}</td>
+          <td class="n">${s.asientos}</td>
+          <td class="n">${money0(s.mensual)}</td>
+          <td class="xsmall muted">${new Date(s.ts).toLocaleString("es-SV")}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>` : `
+      <div class="card mt-32 tc" style="padding:36px">
+        <p class="sec-2">Aún no hay reservas registradas.</p>
+        <p class="small muted mt-8">El valor base antes de lanzar es cero, como establece la guía.
+        Recorra el flujo o comparta el enlace y regrese a esta pantalla.</p>
+        <button class="btn mt-16" onclick="ir('landing')">Ir al producto ${ICON.arrow}</button>
+      </div>`}
+
+    ${d.demanda.length ? `
+      <h4 class="mt-32 mb-16">Zonas sin cobertura solicitadas</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Zona</th><th>Empresa</th><th>Correo</th><th class="n">Asientos</th><th>Fecha</th></tr></thead>
+        <tbody>${d.demanda.slice().reverse().map(x=>`<tr>
+          <td><strong>${esc(x.zona)}</strong></td><td>${esc(x.empresa)}</td>
+          <td class="small">${esc(x.correo)}</td><td class="n">${x.asientos}</td>
+          <td class="xsmall muted">${new Date(x.ts).toLocaleString("es-SV")}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>` : ""}
+  </div></section>`;
+}
+
+/* ============================================================================
+   18. RENDER Y ARRANQUE
+============================================================================ */
+const VISTAS = {
+  landing: vLanding, rutas: vRutas, cotizar: vCotizar, reservar: vReservar,
+  confirmacion: vConfirmacion, estado: vEstado, sincobertura: vSinCobertura,
+  proyecto: vProyecto, medicion: vMedicion
+};
+
+function render(mantenerFoco){
+  const activo = document.activeElement;
+  const id  = activo && activo.id;
+  const pos = activo && activo.selectionStart;
+  const val = activo && activo.value;
+
+  document.getElementById("app").innerHTML = shell((VISTAS[S.vista] || vLanding)());
+
+  if(mantenerFoco && id){
+    const nuevo = document.getElementById(id);
+    if(nuevo){
+      nuevo.focus();
+      try{ nuevo.value = val; nuevo.setSelectionRange(pos,pos); }catch(e){}
+    }
+  }
+}
+
+/* Cierra el desplegable de sugerencias al pulsar fuera. */
+document.addEventListener("click", ev => {
+  try{
+    const t = ev.target;
+    if(S.sugerencias.length && t && t.closest && !t.closest(".suggest")){
+      S.sugerencias = []; S.hi = -1; render();
+    }
+  }catch(e){}
+});
+
+(function init(){
+  S.vista = leerHash();
+  try{ Store.contarVisita(); }catch(e){}
+  render();
+})();
+</script>
+</body>
+</html>
